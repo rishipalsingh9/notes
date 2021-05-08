@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+body {
+    font-family: 'Itim', sans-serif;
+    background: whitesmoke url("images/back.gif")no-repeat;
+}
+
+li {
+    list-style: none;
+}
+
+li a {
+    color: green;
+    text-decoration: none;
+}
