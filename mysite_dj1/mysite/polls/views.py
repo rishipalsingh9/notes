@@ -10,24 +10,24 @@ from polls.models import Choice, Question
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
-    
+
     def get_queryset(self):
-        """Return the last five published questions.(not includung 
+        """Return the last five published questions.(not includung
         those set to be published in future.)
         """
         return Question.objects.filter(
             pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
-    
+
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
-    
+
     def get_queryset(self):
         """
         Excludes any questions that aren't published yet.
         """
         return Question.objects.filter(pub_date__lte=timezone.now())
-    
+
 
 class ResultsView(generic.DetailView):
     model = Question
@@ -35,15 +35,15 @@ class ResultsView(generic.DetailView):
 
     def get_queryset(self):
         return super().get_queryset()
-    
 
+"""
 # funtion used 1st for vote
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
-
+"""
 # funtion 2 for vote
 
-"""def vote(request, question_id):
+def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
@@ -60,7 +60,7 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
-"""
+
 # below is method no. 1
 #def index(request):
  #   latest_question_list = Question.objects.order_by('-pub_date')[:5]
