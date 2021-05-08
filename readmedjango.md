@@ -7,6 +7,7 @@
 - python3 -m venv venv
 - cd to venv
 - pip3 install django(package)
+- pip3 install psycopg2
 - django-admin startproject (name of project)
 - cd to project
 - python3 manage.py startapp (name of app)
