@@ -517,3 +517,165 @@ You can access the fields in this new record using the dot syntax, and change th
     record.save()
 
 ### Searching for Records
+
+You can search for records that match certain criteria using the model's objects attribute (provided by the base class).
+
+> **Note:** Explaining how to search for records using "abstract" model and field names can be a little confusing. In the discussion below we'll refer to a Book model with title and genre fields, where genre is also a model with a single field name.
+
+We can get all records for a model as a QuerySet, using objects.all(). The QuerySet is an iterable object, meaning that it contains a number of objects that we can iterate/loop through.
+
+    all_books = Book.objects.all()
+
+Django's filter() method allows us to filter the returned QuerySet to match a specified text or numeric field against particular criteria. For example, to filter for books that contain "wild" in the title and then count them, we could do the following.
+
+    wild_books = Book.objects.filter(title__contains='wild')
+    number_wild_books = wild_books.count()
+
+The fields to match and the type of match are defined in the filter parameter name, using the format: field_name__match_type (note the double underscore between title and contains above). Above we're filtering title with a case-sensitive match. There are many other types of matches you can do: icontains (case insensitive), iexact (case-insensitive exact match), exact (case-sensitive exact match) and in, gt (greater than), startswith, etc. [The full list is here](https://docs.djangoproject.com/en/3.1/ref/models/querysets/#field-lookups).
+
+In some cases you'll need to filter on a field that defines a one-to-many relationship to another model (e.g. a ForeignKey). In this case you can "index" to fields within the related model with additional double underscores. So for example to filter for books with a specific genre pattern, you will have to index to the name through the genre field, as shown below:
+
+    # Will match on: Fiction, Science fiction, non-fiction etc.
+    books_containing_genre = Book.objects.filter(genre__name__icontains='fiction')
+
+> **Note:** You can use underscores (__) to navigate as many levels of relationships (ForeignKey/ManyToManyField) as you like. For example, a Book that had different types, defined using a further "cover" relationship might have a parameter name: type__cover__name__exact='hard'.
+
+There is a lot more you can do with queries, including backwards searches from related models, chaining filters, returning a smaller set of values etc. For more information see [Making queries](https://docs.djangoproject.com/en/3.1/topics/db/queries/) (Django Docs).
+
+### Defining the LocalLibrary Models
+
+In this section we will start defining the models for the library. Open models.py (in /locallibrary/catalog/). The boilerplate at the top of the page imports the models module, which contains the model base class models.Model that our models will inherit from.
+
+#### Genre Model
+
+Copy the Genre model code shown below and paste it into the bottom of your models.py file. This model is used to store information about the book category — for example whether it is fiction or non-fiction, romance or military history, etc. As mentioned above, we've created the Genre as a model rather than as free text or a selection list so that the possible values can be managed through the database rather than being hard coded.
+
+    class Genre(models.Model):
+    """Model representing a book genre."""
+    name = models.CharField(max_length=200, help_text='Enter a book genre (e.g. Science Fiction)')
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.name
+
+The model has a single CharField field (name), which is used to describe the genre (this is limited to 200 characters and has some help_text. At the end of the model we declare a `__str__()` method, which returns the name of the genre defined by a particular record. No verbose name has been defined, so the field will be called Name in forms.
+
+#### Book Model
+
+Copy the Book model below and again paste it into the bottom of your file. The Book model represents all information about an available book in a general sense, but not a particular physical "instance" or "copy" available for loan. The model uses a CharField to represent the book's title and isbn . For isbn, note how the first unnamed parameter explicitly sets the label as "ISBN" (otherwise it would default to "Isbn").  We also set parameter unique as true in order to ensure all books have a unique ISBN (the unique parameter makes the field value globally unique in a table). The model uses TextField for the summary, because this text may need to be quite long.
+
+    catalog/models.py
+
+    from django.urls import reverse # Used to generate URLs by reversing the URL patterns
+
+    class Book(models.Model):
+        """Model representing a book (but not a specific copy of a book)."""
+        title = models.CharField(max_length=200)
+
+        # Foreign Key used because book can only have one author, but authors can have multiple books
+        # Author as a string rather than object because it hasn't been declared yet in the file
+        author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
+
+        summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
+        isbn = models.CharField('ISBN', max_length=13, unique=True,
+                                help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
+
+        # ManyToManyField used because genre can contain many books. Books can cover many genres.
+        # Genre class has already been defined so we can specify the object above.
+        genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
+
+        def __str__(self):
+            """String for representing the Model object."""
+            return self.title
+
+        def get_absolute_url(self):
+            """Returns the url to access a detail record for this book."""
+            return reverse('book-detail', args=[str(self.id)])
+
+The genre is a ManyToManyField, so that a book can have multiple genres and a genre can have many books. The author is declared as ForeignKey, so each book will only have one author, but an author may have many books (in practice a book might have multiple authors, but not in this implementation!)
+
+In both field types the related model class is declared as the first unnamed parameter using either the model class or a string containing the name of the related model. You must use the name of the model as a string if the associated class has not yet been defined in this file before it is referenced! The other parameters of interest in the author field are null=True, which allows the database to store a Null value if no author is selected, and on_delete=models.SET_NULL, which will set the value of the book's author field to Null if the associated author record is deleted.
+
+> *Warning:* By default on_delete=models.CASCADE, which means that if the author was deleted, this book would be deleted too! We use SET_NULL here, but we could also use PROTECT or RESTRICT to prevent the author being deleted while any book uses it.
+
+The model also defines `__str__()` , using the book's title field to represent a Book record. The final method, get_absolute_url() returns a URL that can be used to access a detail record for this model (for this to work we will have to define a URL mapping that has the name book-detail, and define an associated view and template).
+
+#### BookInstance Model
+
+Next, copy the BookInstance model (shown below) under the other models. The BookInstance represents a specific copy of a book that someone might borrow, and includes information about whether the copy is available or on what date it is expected back, "imprint" or version details, and a unique id for the book in the library.
+
+Some of the fields and methods will now be familiar. The model uses:
+
+- ForeignKey to identify the associated Book (each book can have many copies, but a copy can only have one Book). The key specifies on_delete=models.RESTRICT to ensure that the Book cannot be deleted while referenced by a BookInstance.
+- CharField to represent the imprint (specific release) of the book.
+
+    catalog/models.py
+
+    import uuid # Required for unique book instances
+
+    class BookInstance(models.Model):
+        """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
+        id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
+        book = models.ForeignKey('Book', on_delete=models.RESTRICT, null=True)
+        imprint = models.CharField(max_length=200)
+        due_back = models.DateField(null=True, blank=True)
+
+        LOAN_STATUS = (
+            ('m', 'Maintenance'),
+            ('o', 'On loan'),
+            ('a', 'Available'),
+            ('r', 'Reserved'),
+        )
+
+        status = models.CharField(
+            max_length=1,
+            choices=LOAN_STATUS,
+            blank=True,
+            default='m',
+            help_text='Book availability',
+        )
+
+        class Meta:
+            ordering = ['due_back']
+
+        def __str__(self):
+            """String for representing the Model object."""
+            return f'{self.id} ({self.book.title})'
+
+We additionally declare a few new types of field:
+
+- UUIDField is used for the id field to set it as the primary_key for this model. This type of field allocates a globally unique value for each instance (one for every book you can find in the library).
+- DateField is used for the due_back date (at which the book is expected to become available after being borrowed or in maintenance). This value can be blank or null (needed for when the book is available). The model metadata (Class Meta) uses this field to order records when they are returned in a query.
+- status is a CharField that defines a choice/selection list. As you can see, we define a tuple containing tuples of key-value pairs and pass it to the choices argument. The value in a key/value pair is a display value that a user can select, while the keys are the values that are actually saved if the option is selected. We've also set a default value of 'm' (maintenance) as books will initially be created unavailable before they are stocked on the shelves.
+
+The method `__str__()` represents the BookInstance object using a combination of its unique id and the associated Book's title.
+
+> **Note:** A little Python:
+Starting with Python 3.6, you can use the string interpolation syntax (also known as f-strings): f'{self.id} ({self.book.title})'.
+In older versions of this tutorial, we were using a formatted string syntax, which is also a valid way of formatting strings in Python (e.g. '{0} ({1})'.format(self.id,self.book.title)).
+
+#### Author Model
+
+Copy the Author model (shown below) underneath the existing code in models.py.
+
+    catalog/models.py
+
+    class Author(models.Model):
+    """Model representing an author."""
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_death = models.DateField('Died', null=True, blank=True)
+
+    class Meta:
+        ordering = ['last_name', 'first_name']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('author-detail', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return f'{self.last_name}, {self.first_name}'
+
+All of the fields/methods should now be familiar. The model defines an author as having a first name, last name, and dates of birth and death (both optional). It specifies that by default the `__str__()` returns the name in last name, firstname order. The get_absolute_url() method reverses the author-detail URL mapping to get the URL for displaying an individual author.
