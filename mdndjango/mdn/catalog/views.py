@@ -5,4 +5,5 @@ from django.shortcuts import render
 
 
 def index(request):
-    return HttpResponse("Welcome to Catalog Tutorial")
+    #return HttpResponse("Welcome to Catalog Tutorial")
+    return render(request, 'catalog/index.html')

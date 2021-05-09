@@ -267,3 +267,73 @@ Add the following lines to the bottom of the file:
         path('', RedirectView.as_view(url='catalog/', permanent=True)),
     ]
 
+Leave the first parameter of the path function empty to imply '/'. If you write the first parameter as '/' Django will give you the following warning when you start the development server:
+
+    System check identified some issues:
+
+    WARNINGS:
+    ?: (urls.W002) Your URL pattern '/' has a route beginning with a '/'.
+    Remove this slash as it is unnecessary.
+    If this pattern is targeted in an include(), ensure the include() pattern has a trailing '/'.
+
+Django does not serve static files like CSS, JavaScript, and images by default, but it can be useful for the development web server to do so while you're creating your site. As a final addition to this URL mapper, you can enable the serving of static files during development by appending the following lines.
+
+Add the following final block to the bottom of the file now:
+
+    # Use static() to add url mapping to serve static files during development (only)
+    from django.conf import settings
+    from django.conf.urls.static import static
+
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+> **Note:** There are a number of ways to extend the urlpatterns list (previously, we just appended a new list item using the += operator to clearly separate the old and new code). We could have instead just included this new pattern-map in the original list definition:
+
+    mdn/urls.py (project main url file)
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('catalog/', include('catalog.urls')),
+        path('', RedirectView.as_view(url='catalog/')),
+    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+As a final step, create a file inside your catalog folder called urls.py, and add the following text to define the (empty) imported urlpatterns. This is where we'll add our patterns as we build the application.
+
+    from django.urls import path
+    from . import views
+
+    urlpatterns = [
+
+    ]
+
+### Testing the website framework
+
+At this point we have a complete skeleton project. The website doesn't actually do anything yet, but it's worth running it to make sure that none of our changes have broken anything.
+
+Before we do that, we should first run a database migration. This updates our database (to include any models in our installed applications) and removes some build warnings.
+
+Running database migrations
+Django uses an Object-Relational-Mapper (ORM) to map model definitions in the Django code to the data structure used by the underlying database. As we change our model definitions, Django tracks the changes and can create database migration scripts (in /locallibrary/catalog/migrations/) to automatically migrate the underlying data structure in the database to match the model.
+
+When we created the website, Django automatically added a number of models for use by the admin section of the site (which we'll look at later). Run the following commands to define tables for those models in the database (make sure you are in the directory that contains manage.py):
+
+    python3 manage.py makemigrations
+    python3 manage.py migrate
+
+> *Important:* You'll need to run these commands every time your models change in a way that will affect the structure of the data that needs to be stored (including both addition and removal of whole models and individual fields).
+
+The makemigrations command creates (but does not apply) the migrations for all applications installed in your project. You can specify the application name as well to just run a migration for a single project. This gives you a chance to check out the code for these migrations before they are applied. If you're a Django expert, you may choose to tweak them slightly!
+
+The migrate command is what applies the migrations to your database. Django tracks which ones have been added to the current database.
+
+### Running the website
+
+During development, you can serve the website first using the development web server, and then viewing it on your local web browser.
+
+> **Note:** The development web server is not robust or performant enough for production use, but it is a very easy way to get your Django website up and running during development to give it a convenient quick test. By default it will serve the site to your local computer (http://127.0.0.1:8000/), but you can also specify other computers on your network to serve to. For more information see [django-admin and manage.py: runserver](https://docs.djangoproject.com/en/3.1/ref/django-admin/#runserver)
+
+Run the development web server by calling the runserver command (in the same directory as manage.py):
+
+### Summary
+
+You have now created a complete skeleton website project, which you can go on to populate with urls, models, views, and templates.
+
+Now that the skeleton for the Local Library website is complete and running, it's time to start writing the code that makes this website do what it is supposed to do.

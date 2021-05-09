@@ -4,5 +4,5 @@ from catalog import views
 
 
 urlpatterns = [
-    path('catalog/', views.index, name='index')
+    path('', views.index, name='index')
 ]
