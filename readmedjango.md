@@ -42,7 +42,11 @@
 - Create Template folder in polls directory. In template folder create polls and then index.html.. poll/templates/polls/index.html.
 - Add name spacing in urls.py file by mentioned app_name = name of the app. Before mentioning urlpatterns.
 - Add static files (polls/static/polls/style.css) similary(polls/static/polls/images) or (polls/static/polls/js)
+<<<<<<< HEAD
 - Dont forget to add app name in yourfile/urls.py (app_name='name')
+=======
+- Always add app name in yourfilename/urls.py file (app_name = 'polls')
+>>>>>>> 8ffb112a78d0be0129e4888edc66a645007f8973
 
 In detail django tutorial is as follows. Please add steps above if I forgot any, but as another list item.
 
