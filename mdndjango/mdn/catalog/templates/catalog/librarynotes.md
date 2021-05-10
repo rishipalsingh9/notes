@@ -679,3 +679,404 @@ Copy the Author model (shown below) underneath the existing code in models.py.
         return f'{self.last_name}, {self.first_name}'
 
 All of the fields/methods should now be familiar. The model defines an author as having a first name, last name, and dates of birth and death (both optional). It specifies that by default the `__str__()` returns the name in last name, firstname order. The get_absolute_url() method reverses the author-detail URL mapping to get the URL for displaying an individual author.
+
+## Part 4: Django Admin
+
+Now that we've created models for the LocalLibrary website, we'll use the Django Admin site to add some "real" book data. First we'll show you how to register the models with the admin site, then we'll show you how to login and create some data. At the end of the article we will show some of the ways you can further improve the presentation of the Admin site.
+
+The Django admin application can use your models to automatically build a site area that you can use to create, view, update, and delete records. This can save you a lot of time during development, making it very easy to test your models and get a feel for whether you have the right data. The admin application can also be useful for managing data in production, depending on the type of website. The Django project recommends it only for internal data management (i.e. just for use by admins, or people internal to your organization), as the model-centric approach is not necessarily the best possible interface for all users, and exposes a lot of unnecessary detail about the models. 
+
+All the configuration required to include the admin application in your website was done automatically when you created the skeleton project (for information about actual dependencies needed, see the Django docs here). As a result, all you must do to add your models to the admin application is to register them. At the end of this article we'll provide a brief demonstration of how you might further configure the admin area to better display our model data.
+
+After registering the models we'll show how to create a new "superuser", login to the site, and create some books, authors, book instances, and genres. These will be useful for testing the views and templates we'll start creating in the next tutorial.
+
+### Registering Models with Admin site
+
+First, open admin.py in the catalog application (/locallibrary/catalog/admin.py). It currently looks like this — note that it already imports django.contrib.admin:
+
+    catalog/admin.py
+
+    from django.contrib import admin
+
+    # Register your models here.
+
+Register the models by copying the following text into the bottom of the file. This code imports the models and then calls admin.site.register to register each of them.
+
+    from .models import Author, Genre, Book, BookInstance
+
+    admin.site.register(Book)
+    admin.site.register(Author)
+    admin.site.register(Genre)
+    admin.site.register(BookInstance)
+
+> Note: If you accepted the challenge to create a model to represent the natural language of a book [(see the models tutorial article)](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Models), import and register it too!
+
+This is the simplest way of registering a model, or models, with the site. The admin site is highly customisable, and we'll talk more about the other ways of registering your models further down.
+
+### Creating a Superuser
+
+In order to log into the admin site, we need a user account with Staff status enabled. In order to view and create records we also need this user to have permissions to manage all our objects.  You can create a "superuser" account that has full access to the site and all needed permissions using manage.py.
+
+Call the following command, in the same directory as manage.py, to create the superuser. You will be prompted to enter a username, email address, and strong password.
+
+    python3 manage.py createsuperuser
+
+Once this command completes a new superuser will have been added to the database. Now restart the development server so we can test the login:
+
+    python3 manage.py runserver
+
+### Logging in and using the site
+
+To login to the site, open the /admin URL (e.g. http://127.0.0.1:8000/admin) and enter your new superuser userid and password credentials (you'll be redirected to the login page, and then back to the /admin URL after you've entered your details).
+
+This part of the site displays all our models, grouped by installed application. You can click on a model name to go to a screen that lists all its associated records, and you can further click on those records to edit them. You can also directly click the Add link next to each model to start creating a record of that type.
+
+Click on the Add link to the right of Books to create a new book (this will display a dialog much like the one below). Note how the titles of each field, the type of widget used, and the help_text (if any) match the values you specified in the model. 
+
+Enter values for the fields. You can create new authors or genres by pressing the + button next to the respective fields (or select existing values from the lists if you've already created them). When you're done you can press **SAVE, Save and add another, or Save and continue editing** to save the record.
+
+> **Note:** At this point we'd like you to spend some time adding a few books, authors, and genres (e.g. Fantasy) to your application. Make sure that each author and genre includes a couple of different books (this will make your list and detail views more interesting when we implement them later on in the article series).
+
+When you've finished adding books, click on the Home link in the top bookmark to be taken back to the main admin page. Then click on the Books link to display the current list of books (or on one of the other links to see other model lists). Now that you've added a few books, the list might look similar to the screenshot below. The title of each book is displayed; this is the value returned in the Book model's `__str__()` method that we specified in the last article.
+
+From this list you can delete books by selecting the checkbox next to the book you don't want, selecting the delete... action from the Action drop-down list, and then pressing the Go button. You can also add new books by pressing the ADD BOOK button. 
+
+You can edit a book by selecting its name in the link. The edit page for a book, shown below, is almost identical to the "Add" page. The main differences are the page title (Change book) and the addition of Delete, HISTORY and VIEW ON SITE buttons (this last button appears because we defined the get_absolute_url() method in our model).
+Now navigate back to the Home page (using the Home link in the breadcrumb trail) and then view the Author and Genre lists — you should already have quite a few created from when you added the new books, but feel free to add some more.
+
+What you won't have is any Book Instances, because these are not created from Books (although you can create a Book from a BookInstance — this is the nature of the ForeignKey field). Navigate back to the Home page and press the associated Add button to display the Add book instance screen below. Note the large, globally unique Id, which can be used to separately identify a single copy of a book in the library.
+
+Create a number of these records for each of your books. Set the status as Available for at least some records and On loan for others. If the status is not Available, then also set a future Due back date.
+
+That's it! You've now learned how to set up and use the administration site. You've also created records for Book, BookInstance, Genre, and Author that we'll be able to use once we create our own views and templates.
+
+### Advanced configuration
+
+Django does a pretty good job of creating a basic admin site using the information from the registered models:
+
+- Each model has a list of individual records, identified by the string created with the model's `__str__()` method, and linked to detail views/forms for editing. By default, this view has an action menu at the top that you can use to perform bulk delete operations on records.
+- The model detail record forms for editing and adding records contain all the fields in the model, laid out vertically in their declaration order.  
+
+You can further customise the interface to make it even easier to use. Some of the things you can do are:
+
+- List views:
+  - Add additional fields/information displayed for each record. 
+  - Add filters to select which records are listed, based on date or some other selection value (e.g. Book loan status).
+  - Add additional options to the actions menu in list views and choose where this menu is displayed on the form.
+- Detail views
+  - Choose which fields to display (or exclude), along with their order, grouping, whether they are editable, the widget used, orientation etc.
+  - Add related fields to a record to allow inline editing (e.g. add the ability to add and edit book records while you're creating their author record).
+
+In this section we're going to look at a few changes that will improve the interface for our LocalLibrary, including adding more information to Book and Author model lists, and improving the layout of their edit views. We won't change the Language and Genre model presentation because they only have one field each, so there is no real benefit in doing so!
+
+You can find a complete reference of all the admin site customisation choices in [The Django Admin site](https://docs.djangoproject.com/en/3.1/ref/contrib/admin/) (Django Docs).
+
+### Register a ModelAdmin Class
+
+To change how a model is displayed in the admin interface you define a ModelAdmin class (which describes the layout) and register it with the model.
+
+Let's start with the Author model. Open admin.py in the catalog application (/locallibrary/catalog/admin.py). Comment out your original registration (prefix it with a #) for the Author model:
+
+    # admin.site.register(Author)
+
+Now add a new AuthorAdmin and registration as shown below.
+
+    # Define the admin class
+    class AuthorAdmin(admin.ModelAdmin):
+        pass
+
+    # Register the admin class with the associated model
+    admin.site.register(Author, AuthorAdmin)
+
+Now we'll add ModelAdmin classes for Book, and BookInstance. We again need to comment out the original registrations:
+
+    # admin.site.register(Book)
+    # admin.site.register(BookInstance)
+
+Now to create and register the new models; for the purpose of this demonstration, we'll instead use the @register decorator to register the models (this does exactly the same thing as the admin.site.register() syntax):
+
+    # Register the Admin classes for Book using the decorator
+    @admin.register(Book)
+    class BookAdmin(admin.ModelAdmin):
+        pass
+
+    # Register the Admin classes for BookInstance using the decorator
+    @admin.register(BookInstance)
+    class BookInstanceAdmin(admin.ModelAdmin):
+        pass
+
+Currently all of our admin classes are empty (see pass) so the admin behavior will be unchanged! We can now extend these to define our model-specific admin behavior.
+
+### Configure List View
+
+The LocalLibrary currently lists all authors using the object name generated from the model __str__() method. This is fine when you only have a few authors, but once you have many you may end up having duplicates. To differentiate them, or just because you want to show more interesting information about each author, you can use list_display to add additional fields to the view. 
+
+Replace your AuthorAdmin class with the code below. The field names to be displayed in the list are declared in a tuple in the required order, as shown (these are the same names as specified in your original model).
+
+    class AuthorAdmin(admin.ModelAdmin):
+        list_display = ('last_name', 'first_name', 'date_of_birth', 'date_of_death')
+
+Now navigate to the author list in your website. The fields above should now be displayed, like so:
+
+For our Book model we'll additionally display the author and genre. The author is a ForeignKey field (one-to-many) relationship, and so will be represented by the `__str__()` value for the associated record. Replace the BookAdmin class with the version below.
+
+    class BookAdmin(admin.ModelAdmin):
+        list_display = ('title', 'author', 'display_genre')
+
+Unfortunately we can't directly specify the genre field in list_display because it is a ManyToManyField (Django prevents this because there would be a large database access "cost" in doing so). Instead we'll define a display_genre function to get the information as a string (this is the function we've called above; we'll define it below).
+
+> **Note:** Getting the genre may not be a good idea here, because of the "cost" of the database operation. We're showing you how because calling functions in your models can be very useful for other reasons — for example to add a Delete link next to every item in the list.
+
+Add the following code into your Book model (models.py). This creates a string from the first three values of the genre field (if they exist) and creates a short_description that can be used in the admin site for this method.
+
+    def display_genre(self):
+        """Create a string for the Genre. This is required to display genre in Admin."""
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+
+        display_genre.short_description = 'Genre'
+
+After saving the model and updated admin, open your website and go to the Books list page; you should see a book list like the one below:
+
+The Genre model (and the Language model, if you defined one) both have a single field, so there is no point creating an additional model for them to display additional fields.
+
+> **Note:** It is worth updating the BookInstance model list to show at least the status and the expected return date. We've added that as a challenge at the end of this article!
+
+### Add list filters
+
+Once you've got a lot of items in a list, it can be useful to be able to filter which items are displayed. This is done by listing fields in the list_filter attribute. Replace your current BookInstanceAdmin class with the code fragment below.
+
+    class BookInstanceAdmin(admin.ModelAdmin):
+        list_filter = ('status', 'due_back')
+
+The list view will now include a filter box to the right. Note how you can choose dates and status to filter the values:
+
+### Organize detail view layout
+
+By default, the detail views lay out all fields vertically, in their order of declaration in the model. You can change the order of declaration, which fields are displayed (or excluded), whether sections are used to organize the information, whether fields are displayed horizontally or vertically, and even what edit widgets are used in the admin forms.
+
+> **Note:** The LocalLibrary models are relatively simple so there isn't a huge need for us to change the layout; we'll make some changes anyway however, just to show you how.
+
+### Controlling which fields are displayed and laid out
+
+Update your AuthorAdmin class to add the fields line, as shown below (in bold):
+
+    class AuthorAdmin(admin.ModelAdmin):
+        list_display = ('last_name', 'first_name', 'date_of_birth', 'date_of_death')
+        fields = ['first_name', 'last_name', ('date_of_birth', 'date_of_death')]
+
+The fields attribute lists just those fields that are to be displayed on the form, in order. Fields are displayed vertically by default, but will display horizontally if you further group them in a tuple (as shown in the "date" fields above).
+
+In your website go to the author detail view — it should now appear as shown below:
+
+> **Note:** You can also use the exclude attribute to declare a list of attributes to be excluded from the form (all other attributes in the model will be displayed).
+
+### Sectioning the detail view
+
+You can add "sections" to group related model information within the detail form, using the fieldsets attribute.
+
+In the BookInstance model we have information related to what the book is (i.e. name, imprint, and id) and when it will be available (status, due_back). We can add these in different sections by adding the text in bold to our BookInstanceAdmin class. 
+
+    @admin.register(BookInstance)
+    class BookInstanceAdmin(admin.ModelAdmin):
+        list_filter = ('status', 'due_back')
+
+        fieldsets = (
+            (None, {
+                'fields': ('book', 'imprint', 'id')
+            }),
+            ('Availability', {
+                'fields': ('status', 'due_back')
+            }),
+        )
+
+Each section has its own title (or None, if you don't want a title) and an associated tuple of fields in a dictionary — the format is complicated to describe, but fairly easy to understand if you look at the code fragment immediately above.
+
+Now navigate to a book instance view in your website; the form should appear as shown below:
+
+### Inline editing of associated records
+
+Sometimes it can make sense to be able to add associated records at the same time. For example, it may make sense to have both the book information and information about the specific copies you've got on the same detail page.
+
+You can do this by declaring [inlines](https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.ModelAdmin.inlines), of type [TabularInline](https://docs.djangoproject.com/en/3.1/ref/contrib/admin/#django.contrib.admin.TabularInline) (horizontal layout) or StackedInline (vertical layout, just like the default model layout). You can add the BookInstance information inline to our Book detail by adding the lines below in bold near your BookAdmin:
+
+    class BooksInstanceInline(admin.TabularInline):
+        model = BookInstance
+
+    @admin.register(Book)
+    class BookAdmin(admin.ModelAdmin):
+        list_display = ('title', 'author', 'display_genre')
+        inlines = [BooksInstanceInline]
+
+Now navigate to a view for a Book in your website — at the bottom you should now see the book instances relating to this book (immediately below the book's genre fields):
+
+In this case all we've done is declare our tabular inline class, which just adds all fields from the inlined model. You can specify all sorts of additional information for the layout, including the fields to display, their order, whether they are read only or not, etc. (see TabularInline for more information).
+
+> **Note:** There are some painful limits in this functionality! In the screenshot above we have three existing book instances, followed by three placeholders for new book instances (which look very similar!). It would be better to have NO spare book instances by default and just add them with the Add another Book instance link, or to be able to just list the BookInstances as non-readable links from here. The first option can be done by setting the extra attribute to 0 in BooksInstanceInline model, try it by yourself.
+
+### Challange
+
+We've learned a lot in this section, so now it is time for you to try a few things.
+
+- For the BookInstance list view, add code to display the book, status, due back date, and id (rather than the default `__str__()` text).
+- Add an inline listing of Book items to the Author detail view using the same approach as we did for Book/BookInstance.
+
+## Part 5: Creating Our Home Page
+
+We're now ready to add the code that displays our first complete page — a home page for the LocalLibrary website. The home page will show the number of records we have for each model type and provide sidebar navigation links to our other pages. Along the way we'll gain practical experience in writing basic URL maps and views, getting records from the database, and using templates.
+
+After we defined our models and created some initial library records to work with, it's time to write the code that presents that information to users. The first thing we need to do is determine what information we want to display in our pages, and define the URLs to use for returning those resources. Then we'll create a URL mapper, views, and templates to display the pages. 
+
+The following diagram describes the main data flow, and the components required when handling HTTP requests and responses. As we already implemented the model, the main components we'll create are:
+
+- URL mappers to forward the supported URLs (and any information encoded in the URLs) to the appropriate view functions.
+- View functions to get the requested data from the models, create HTML pages that display the data, and return the pages to the user to view in the browser.
+- Templates to use when rendering data in the views.
+
+![Working of Views in Diagram](../../static/catalog/images/views.png)
+
+As you'll see in the next section, we have 5 pages to display, which is too much information to document in a single article. Therefore, this article will focus on how to implement the home page, and we'll cover the other pages in a subsequent article. This should give you a good end-to-end understanding of how URL mappers, views, and models work in practice.
+
+### Defining the resource URLs
+
+As this version of LocalLibrary is essentially read-only for end users, we just need to provide a landing page for the site (a home page), and pages that display list and detail views for books and authors. 
+
+The URLs that we'll need for our pages are:
+
+- catalog/ — The home (index) page.
+- catalog/books/ — A list of all books.
+- catalog/authors/ — A list of all authors.
+- catalog/book/`<id>` — The detail view for a particular book, with a field primary key of `<id>` (the default). For example, the URL for the third book added to the list will be /catalog/book/3.
+- catalog/author/`<id>` — The detail view for the specific author with a primary key field of `<id>`. For example, the URL for the 11th author added to the list will be  /catalog/author/11.
+
+The first three URLs will return the index page, books list, and authors list. These URLs do not encode any additional information, and the queries that fetch data from the database will always be the same. However, the results that the queries return will depend on the contents of the database.
+
+By contrast the final two URLs will display detailed information about a specific book or author.  These URLs encode the identity of the item to display (represented by `<id>` above). The URL mapper will extract the encoded information and pass it to the view, and the view will dynamically determine what information to get from the database. By encoding the information in the URL we will use a single set of a url mapping, a view, and a template to handle all books (or authors).
+
+> **Note:** With Django, you can construct your URLs however you require — you can encode information in the body of the URL as shown above, or include GET parameters in the URL, for example /book/?id=6. Whichever approach you use, the URLs should be kept clean, logical, and readable, as recommended by the W3C. The Django documentation recommends encoding information in the body of the URL to achieve better URL design.
+
+### Creating the index page
+
+The first page we'll create is the index page (catalog/). The index page will include some static HTML, along with generated "counts" of different records in the database. To make this work we'll create a URL mapping, a view, and a template. 
+
+> **Note:** It's worth paying a little extra attention in this section. Most of the information also applies to the other pages we'll create.
+
+### URL mapping
+
+When we created the skeleton website, we updated the locallibrary/urls.py file to ensure that whenever a URL that starts with catalog/  is received, the URLConf module catalog.urls will process the remaining substring.
+
+The following code snippet from locallibrary/urls.py includes the catalog.urls module:  
+
+    urlpatterns += [
+        path('catalog/', include('catalog.urls')),
+    ]
+
+> **Note:** Whenever Django encounters the import function django.urls.include(), it splits the URL string at the designated end character and sends the remaining substring to the included URLconf module for further processing.
+
+We also created a placeholder file for the URLConf module, named /catalog/urls.py. Add the following lines to that file: 
+
+    urlpatterns = [
+        path('', views.index, name='index'),
+    ]
+
+The path() function defines the following:
+
+- A URL pattern, which is an empty string: ''. We'll discuss URL patterns in detail when working on the other views.
+- A view function that will be called if the URL pattern is detected: views.index,  which is the function named index() in the views.py file.
+
+The path() function also specifies a name parameter, which is a unique identifier for this particular URL mapping. You can use the name to "reverse" the mapper, i.e.  to dynamically create a URL that  points to the resource that the mapper is designed to handle. For example, we can use the name parameter to link to our home page from any other page by adding the following link in a template:
+
+    <a href="{% url 'index' %}">Home</a>
+
+> **Note:** We can hard code the link as in `<a href="/catalog/">Home</a>)`, but if we change the pattern for our home page, for example, to /catalog/index) the templates will no longer link correctly. Using a reversed url mapping is more robust.
+
+### View (function-based)
+
+A view is a function that processes an HTTP request, fetches the required data from the database, renders the data in an HTML page using an HTML template, and then returns the generated HTML in an HTTP response to display the page to the user. The index view follows this model — it fetches information about the number of Book, BookInstance, available BookInstance and Author records that we have in the database, and passes that information to a template for display.
+
+Open catalog/views.py and note that the file already imports the render() shortcut function to generate an HTML file using a template and data: 
+
+    from django.shortcuts import render
+
+    # Create your views here.
+
+Paste the following lines at the bottom of the file:
+
+    from catalog.models import Book, Author, BookInstance, Genre
+
+    def index(request):
+        """View function for home page of site."""
+
+        # Generate counts of some of the main objects
+        num_books = Book.objects.all().count()
+        num_instances = BookInstance.objects.all().count()
+
+        # Available books (status = 'a')
+        num_instances_available = BookInstance.objects.filter(status__exact='a').count()
+
+        # The 'all()' is implied by default.
+        num_authors = Author.objects.count()
+
+        context = {
+            'num_books': num_books,
+            'num_instances': num_instances,
+            'num_instances_available': num_instances_available,
+            'num_authors': num_authors,
+        }
+
+        # Render the HTML template index.html with the data in the context variable
+        return render(request, 'index.html', context=context)
+
+The first line imports the model classes that we'll use to access data in all our views.
+
+The first part of the view function fetches the number of records using the objects.all() attribute on the model classes. It also gets a list of BookInstance objects that have a value of 'a' (Available) in the status field. You can find more information about how to access model data in our previous tutorial Django Tutorial Part 3: Using models > Searching for records.
+
+At the end of the view function we call the render() function to create an HTML page and return the page as a response. This shortcut function wraps a number of other functions to simplify a very common use case. The render() function accepts the following parameters:
+
+- the original request object, which is an HttpRequest.
+- an HTML template with placeholders for the data.
+- a context variable, which is a Python dictionary, containing the data to insert into the placeholders. 
+
+We'll talk more about templates and the context variable in the next section.  Let's get to creating our template so we can actually display something to the user!
+
+### Templates
+
+A template is a text file that defines the structure or layout of a file (such as an HTML page), it uses placeholders to represent actual content. 
+
+A Django application created using startapp (like the skeleton of this example) will look for templates in a subdirectory named 'templates' of your applications. For example, in the index view that we just added, the render() function will expect to find the file index.html in /locallibrary/catalog/templates/ and will raise an error if the file is not present.
+
+You can check this by saving the previous changes and accessing 127.0.0.1:8000 in your browser - it will display a fairly intuitive error message: "TemplateDoesNotExist at /catalog/", and other details.
+
+> **Note:** Based on your project's settings file, Django will look for templates in a number of places, searching in your installed applications by default. You can find out more about how Django finds templates and what template formats it supports in the Templates section of the Django documentation
+
+### Extending templates
+
+The index template will need standard HTML markup for the head and body, along with navigation sections to link to the other pages of the site (which we haven't created yet), and to sections that display introductory text and book data.
+
+Much of the HTML and navigation structure will be the same in every page of our site. Instead of duplicating boilerplate code on every page, you can use the Django templating language to declare a base template, and then extend it to replace just the bits that are different for each specific page. 
+
+The following code snippet is a sample base template from a base_generic.html file. We'll be creating the template for LocalLibrary shortly. The sample below includes common HTML with sections for a title, a sidebar, and main contents marked with the named block and endblock template tags, shown in bold. You can leave the blocks empty, or include default content to use when rendering pages derived from the template.
+
+> **Note:** Template tags are functions that you can use in a template to loop through lists, perform conditional operations based on the value of a variable, and so on. In addition to template tags, the template syntax allows you to reference variables that are passed into the template from the view, and use template filters to format variables (for example, to convert a string to lower case).
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    {% block title %}<title>Local Library</title>{% endblock %}
+    </head>
+    <body>
+    {% block sidebar %}<!-- insert default navigation text for every page -->{% endblock %}
+    {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+    </body>
+    </html>
+
+When defining a template for a particular view, we first specify the base template using the extends template tag — see the code sample below. Then we declare what sections from the template we want to replace (if any), using block/endblock sections as in the base template. 
+
+For example, the code snippet below shows how to use the extends template tag and override the content block. The generated HTML will include the code and structure defined in the base template, including the default content you defined in the title block, but the new content block in place of the default one.
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+    <h1>Local Library Home</h1>
+    <p>Welcome to LocalLibrary, a website developed by <em>Mozilla Developer Network</em>!</p>
+    {% endblock %}
+
