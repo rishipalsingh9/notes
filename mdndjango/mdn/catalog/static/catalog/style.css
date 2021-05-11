@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+body {
+    font-family: 'Raleway', sans-serif;
+    background: black url("images/venice_marco.jpg");
+}
+
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.list-inline1 {
+    display: inline-block;
+}
+
+.list-inline-item1 {
+    display: inline;
+}
+
+li a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.col-md-10 {
+    color: bisque;
+}

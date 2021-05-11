@@ -23,5 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('mdntuto/', include('mdntuto.urls')),
     path('catalog/', include('catalog.urls')),
-    path('', RedirectView.as_view(url='catalog/')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('', RedirectView.as_view(url='/catalog/', permanent=True)),
+]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
