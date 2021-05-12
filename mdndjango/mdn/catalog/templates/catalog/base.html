@@ -1,11 +1,12 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
     <link rel="stylesheet" href="{% static 'catalog/style.css' %}">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous"/>
     {% block title %}
     <title></title>
@@ -47,7 +48,7 @@
               <ul class="sidebar-nav list-inline1 p-2">
                 <li class="list-inline-item1"><a href="{% url 'catalog:index' %}">Home</a></li>
                 <li class="list-inline-item1"><a href="{% url 'catalog:books' %}">All books</a></li>
-                <li class="list-inline-item1"><a href="">All authors</a></li>
+                <li class="list-inline-item1"><a href="{% url 'catalog:authors' %}">All authors</a></li>
               </ul>
             {% endblock %}
           </div>  
@@ -58,7 +59,23 @@
       <div class="row">
         <div class="col-md-10">
           {% block content %}
-
+            {% block pagination %}
+              {% if is_paginated %}
+                <div class="pagination">
+                    <span class="page-links">
+                        {% if page_obj.has_previous %}
+                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+                        <span class="page-current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                        {% endif %}
+                    </span>
+                </div>
+              {% endif %}
+            {% endblock %}
           {% endblock %}
         </div>
       </div>

@@ -34,7 +34,7 @@ def index(request):
 
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 10
+    paginate_by = 2
     # your own name for the list as a template variable
     #context_object_name = 'my_book_list'
     #queryset = Book.objects.filter(title__icontains='power')[:5]  # Get 5 books containing the title power
@@ -55,3 +55,9 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+    
+class AuthorListView(generic.ListView):
+    model = Author
+    
+class AuthorDetailView(generic.DetailView):
+    model = Author
