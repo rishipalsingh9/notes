@@ -1,9 +1,9 @@
 import uuid # Required for unique book instances
-from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 from django.db import models
 
 # Create your models here.
-
+# Used to generate URLs by reversing the URL patterns
+from django.urls import reverse
 
 class Genre(models.Model):
     """Model representing a book genre."""
@@ -39,8 +39,9 @@ class Book(models.Model):
     genre = models.ManyToManyField(
         Genre, help_text='Select a genre for this book')
     
-    language = models.ManyToManyField(Language, help_text='Select Language for this book')
-
+    language = models.ManyToManyField(
+        Language, help_text='Select Language for this book')
+    
     def __str__(self):
         """String for representing the Model object."""
         return self.title
@@ -67,7 +68,7 @@ class BookInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           help_text='Unique ID for this particular book across whole library')
     book = models.ForeignKey('Book', on_delete=models.RESTRICT, null=True)
-    no_of_books = models.IntegerField()
+    imprint = models.IntegerField()
     due_back = models.DateField(null=True, blank=True)
 
     LOAN_STATUS = (
