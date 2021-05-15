@@ -1,20 +1,23 @@
-{% extends 'catalog/base.html' %}
-{% block title %}
-    <title>{{ author.name }}</title>
-{% endblock %}
+{% extends "catalog/base.html" %}
+
 {% block content %}
-    <h1>Author List</h1>
+    
+<h1>Author List</h1>
+
     {% if author_list %}
       <ul>
+
         {% for author in author_list %}
         <li>
-          <a href="{{ author.id }}">{{ author }} ({{author.date_of_birth}} - 
+          <a href="{{ author.get_absolute_url }}">{{ author }} ({{author.date_of_birth}} - 
               {% if author.date_of_date %}{{author.date_of_death}}{% endif %})
             )</a> 
         </li>
         {% endfor %}
+
       </ul>
     {% else %}
       <p>There are no authors available.</p>
-    {% endif %}       
+    {% endif %}
+    
 {% endblock %}

@@ -4,7 +4,7 @@ The first article in our practical tutorial series explains what you'll learn, a
 
 ## Overview
 
-Welcome to the MDN "Local Library" Django tutorial, in which we develop a website that might be used to manage the catalog for a local library. 
+Welcome to the MDN "Local Library" Django tutorial, in which we develop a website that might be used to manage the catalog for a local library.
 
 In this series of tutorial articles you will:
 
@@ -147,7 +147,7 @@ The updated project directory should now look like this:
 
 In addition we now have:
 
-- A migrations folder, used to store "migrations" — files that allow you to automatically update your database as you modify your models. 
+- A migrations folder, used to store "migrations" — files that allow you to automatically update your database as you modify your models.
 - `__init__.py` — an empty file created here so that Django/Python will recognize the folder as a Python Package and allow you to use its objects within other parts of the project.
   
 > **Note:** Have you noticed what is missing from the files list above? While there is a place for your views and models, there is nowhere for you to put your url mappings, templates, and static files. We'll show you how to create them further along (these aren't needed in every website but they are needed in this example).
@@ -211,7 +211,7 @@ The settings.py file is also used for configuring a number of other settings, bu
 
 There are two other settings you won't change now, but that you should be aware of:
 
-- **SECRET_KEY.** This is a secret key that is used as part of Django's website security strategy. If you're not protecting this code in development, you'll need to use a different code (perhaps read from an environment variable or file) when putting it into production. 
+- **SECRET_KEY.** This is a secret key that is used as part of Django's website security strategy. If you're not protecting this code in development, you'll need to use a different code (perhaps read from an environment variable or file) when putting it into production.
 - **DEBUG.** This enables debugging logs to be displayed on error, rather than HTTP status code responses. This should be set to False in production as debug information is useful for attackers, but for now we can keep it set to True.
 
 ### Hooking up the URL mapper
@@ -328,11 +328,9 @@ The migrate command is what applies the migrations to your database. Django trac
 
 During development, you can serve the website first using the development web server, and then viewing it on your local web browser.
 
-> **Note:** The development web server is not robust or performant enough for production use, but it is a very easy way to get your Django website up and running during development to give it a convenient quick test. By default it will serve the site to your local computer (http://127.0.0.1:8000/), but you can also specify other computers on your network to serve to. For more information see [django-admin and manage.py: runserver](https://docs.djangoproject.com/en/3.1/ref/django-admin/#runserver)
+> **Note:** The development web server is not robust or performant enough for production use, but it is a very easy way to get your Django website up and running during development to give it a convenient quick test. By default it will serve the site to your local computer (<http://127.0.0.1:8000/>), but you can also specify other computers on your network to serve to. For more information see [django-admin and manage.py: runserver](https://docs.djangoproject.com/en/3.1/ref/django-admin/#runserver)
 
 Run the development web server by calling the runserver command (in the same directory as manage.py):
-
-### Summary
 
 You have now created a complete skeleton website project, which you can go on to populate with urls, models, views, and templates.
 
@@ -343,8 +341,7 @@ Now that the skeleton for the Local Library website is complete and running, it'
 ***
 This article shows how to define models for the LocalLibrary website. It explains what a model is, how it is declared, and some of the main field types. It also briefly shows a few of the main ways you can access model data.
 
-### Overview
-
+**Overview**
 Django web applications access and manage data through Python objects referred to as models. Models define the structure of stored data, including the field types and possibly also their maximum size, default values, selection list options, help text for documentation, label text for forms, etc. The definition of the model is independent of the underlying database — you can choose one of several as part of your project settings. Once you've chosen what database you want to use, you don't need to talk to it directly at all — you just write your model structure and other code, and Django handles all the dirty work of communicating with the database for you.
 
 This tutorial shows how to define and access the models for the LocalLibrary website example.
@@ -432,7 +429,7 @@ There are many other options — you can view the [full list of field options he
 
 ### Common Field Types
 
-The following list describes some of the more commonly used types of fields. 
+The following list describes some of the more commonly used types of fields.
 
 - CharField is used to define short-to-mid sized fixed-length strings. You must specify the max_length of the data to be stored.
 - TextField is used for large arbitrary-length strings. You may specify a max_length for the field, but this is used only when the field is displayed in forms (it is not enforced at the database level).
@@ -684,7 +681,7 @@ All of the fields/methods should now be familiar. The model defines an author as
 
 Now that we've created models for the LocalLibrary website, we'll use the Django Admin site to add some "real" book data. First we'll show you how to register the models with the admin site, then we'll show you how to login and create some data. At the end of the article we will show some of the ways you can further improve the presentation of the Admin site.
 
-The Django admin application can use your models to automatically build a site area that you can use to create, view, update, and delete records. This can save you a lot of time during development, making it very easy to test your models and get a feel for whether you have the right data. The admin application can also be useful for managing data in production, depending on the type of website. The Django project recommends it only for internal data management (i.e. just for use by admins, or people internal to your organization), as the model-centric approach is not necessarily the best possible interface for all users, and exposes a lot of unnecessary detail about the models. 
+The Django admin application can use your models to automatically build a site area that you can use to create, view, update, and delete records. This can save you a lot of time during development, making it very easy to test your models and get a feel for whether you have the right data. The admin application can also be useful for managing data in production, depending on the type of website. The Django project recommends it only for internal data management (i.e. just for use by admins, or people internal to your organization), as the model-centric approach is not necessarily the best possible interface for all users, and exposes a lot of unnecessary detail about the models.
 
 All the configuration required to include the admin application in your website was done automatically when you created the skeleton project (for information about actual dependencies needed, see the Django docs here). As a result, all you must do to add your models to the admin application is to register them. At the end of this article we'll provide a brief demonstration of how you might further configure the admin area to better display our model data.
 
@@ -727,11 +724,11 @@ Once this command completes a new superuser will have been added to the database
 
 ### Logging in and using the site
 
-To login to the site, open the /admin URL (e.g. http://127.0.0.1:8000/admin) and enter your new superuser userid and password credentials (you'll be redirected to the login page, and then back to the /admin URL after you've entered your details).
+To login to the site, open the /admin URL (e.g. <http://127.0.0.1:8000/admin>) and enter your new superuser userid and password credentials (you'll be redirected to the login page, and then back to the /admin URL after you've entered your details).
 
 This part of the site displays all our models, grouped by installed application. You can click on a model name to go to a screen that lists all its associated records, and you can further click on those records to edit them. You can also directly click the Add link next to each model to start creating a record of that type.
 
-Click on the Add link to the right of Books to create a new book (this will display a dialog much like the one below). Note how the titles of each field, the type of widget used, and the help_text (if any) match the values you specified in the model. 
+Click on the Add link to the right of Books to create a new book (this will display a dialog much like the one below). Note how the titles of each field, the type of widget used, and the help_text (if any) match the values you specified in the model.
 
 Enter values for the fields. You can create new authors or genres by pressing the + button next to the respective fields (or select existing values from the lists if you've already created them). When you're done you can press **SAVE, Save and add another, or Save and continue editing** to save the record.
 
@@ -739,7 +736,7 @@ Enter values for the fields. You can create new authors or genres by pressing th
 
 When you've finished adding books, click on the Home link in the top bookmark to be taken back to the main admin page. Then click on the Books link to display the current list of books (or on one of the other links to see other model lists). Now that you've added a few books, the list might look similar to the screenshot below. The title of each book is displayed; this is the value returned in the Book model's `__str__()` method that we specified in the last article.
 
-From this list you can delete books by selecting the checkbox next to the book you don't want, selecting the delete... action from the Action drop-down list, and then pressing the Go button. You can also add new books by pressing the ADD BOOK button. 
+From this list you can delete books by selecting the checkbox next to the book you don't want, selecting the delete... action from the Action drop-down list, and then pressing the Go button. You can also add new books by pressing the ADD BOOK button.
 
 You can edit a book by selecting its name in the link. The edit page for a book, shown below, is almost identical to the "Add" page. The main differences are the page title (Change book) and the addition of Delete, HISTORY and VIEW ON SITE buttons (this last button appears because we defined the get_absolute_url() method in our model).
 Now navigate back to the Home page (using the Home link in the breadcrumb trail) and then view the Author and Genre lists — you should already have quite a few created from when you added the new books, but feel free to add some more.
@@ -760,7 +757,7 @@ Django does a pretty good job of creating a basic admin site using the informati
 You can further customise the interface to make it even easier to use. Some of the things you can do are:
 
 - List views:
-  - Add additional fields/information displayed for each record. 
+  - Add additional fields/information displayed for each record.
   - Add filters to select which records are listed, based on date or some other selection value (e.g. Book loan status).
   - Add additional options to the actions menu in list views and choose where this menu is displayed on the form.
 - Detail views
@@ -809,7 +806,7 @@ Currently all of our admin classes are empty (see pass) so the admin behavior wi
 
 ### Configure List View
 
-The LocalLibrary currently lists all authors using the object name generated from the model __str__() method. This is fine when you only have a few authors, but once you have many you may end up having duplicates. To differentiate them, or just because you want to show more interesting information about each author, you can use list_display to add additional fields to the view. 
+The LocalLibrary currently lists all authors using the object name generated from the model __str__() method. This is fine when you only have a few authors, but once you have many you may end up having duplicates. To differentiate them, or just because you want to show more interesting information about each author, you can use list_display to add additional fields to the view.
 
 Replace your AuthorAdmin class with the code below. The field names to be displayed in the list are declared in a tuple in the required order, as shown (these are the same names as specified in your original model).
 
@@ -874,7 +871,7 @@ In your website go to the author detail view — it should now appear as shown b
 
 You can add "sections" to group related model information within the detail form, using the fieldsets attribute.
 
-In the BookInstance model we have information related to what the book is (i.e. name, imprint, and id) and when it will be available (status, due_back). We can add these in different sections by adding the text in bold to our BookInstanceAdmin class. 
+In the BookInstance model we have information related to what the book is (i.e. name, imprint, and id) and when it will be available (status, due_back). We can add these in different sections by adding the text in bold to our BookInstanceAdmin class.
 
     @admin.register(BookInstance)
     class BookInstanceAdmin(admin.ModelAdmin):
@@ -924,7 +921,7 @@ We've learned a lot in this section, so now it is time for you to try a few thin
 
 We're now ready to add the code that displays our first complete page — a home page for the LocalLibrary website. The home page will show the number of records we have for each model type and provide sidebar navigation links to our other pages. Along the way we'll gain practical experience in writing basic URL maps and views, getting records from the database, and using templates.
 
-After we defined our models and created some initial library records to work with, it's time to write the code that presents that information to users. The first thing we need to do is determine what information we want to display in our pages, and define the URLs to use for returning those resources. Then we'll create a URL mapper, views, and templates to display the pages. 
+After we defined our models and created some initial library records to work with, it's time to write the code that presents that information to users. The first thing we need to do is determine what information we want to display in our pages, and define the URLs to use for returning those resources. Then we'll create a URL mapper, views, and templates to display the pages.
 
 The following diagram describes the main data flow, and the components required when handling HTTP requests and responses. As we already implemented the model, the main components we'll create are:
 
@@ -938,7 +935,7 @@ As you'll see in the next section, we have 5 pages to display, which is too much
 
 ### Defining the resource URLs
 
-As this version of LocalLibrary is essentially read-only for end users, we just need to provide a landing page for the site (a home page), and pages that display list and detail views for books and authors. 
+As this version of LocalLibrary is essentially read-only for end users, we just need to provide a landing page for the site (a home page), and pages that display list and detail views for books and authors.
 
 The URLs that we'll need for our pages are:
 
@@ -956,7 +953,7 @@ By contrast the final two URLs will display detailed information about a specifi
 
 ### Creating the index page
 
-The first page we'll create is the index page (catalog/). The index page will include some static HTML, along with generated "counts" of different records in the database. To make this work we'll create a URL mapping, a view, and a template. 
+The first page we'll create is the index page (catalog/). The index page will include some static HTML, along with generated "counts" of different records in the database. To make this work we'll create a URL mapping, a view, and a template.
 
 > **Note:** It's worth paying a little extra attention in this section. Most of the information also applies to the other pages we'll create.
 
@@ -972,7 +969,7 @@ The following code snippet from locallibrary/urls.py includes the catalog.urls m
 
 > **Note:** Whenever Django encounters the import function django.urls.include(), it splits the URL string at the designated end character and sends the remaining substring to the included URLconf module for further processing.
 
-We also created a placeholder file for the URLConf module, named /catalog/urls.py. Add the following lines to that file: 
+We also created a placeholder file for the URLConf module, named /catalog/urls.py. Add the following lines to that file:
 
     urlpatterns = [
         path('', views.index, name='index'),
@@ -993,7 +990,7 @@ The path() function also specifies a name parameter, which is a unique identifie
 
 A view is a function that processes an HTTP request, fetches the required data from the database, renders the data in an HTML page using an HTML template, and then returns the generated HTML in an HTTP response to display the page to the user. The index view follows this model — it fetches information about the number of Book, BookInstance, available BookInstance and Author records that we have in the database, and passes that information to a template for display.
 
-Open catalog/views.py and note that the file already imports the render() shortcut function to generate an HTML file using a template and data: 
+Open catalog/views.py and note that the file already imports the render() shortcut function to generate an HTML file using a template and data:
 
     from django.shortcuts import render
 
@@ -1034,13 +1031,13 @@ At the end of the view function we call the render() function to create an HTML 
 
 - the original request object, which is an HttpRequest.
 - an HTML template with placeholders for the data.
-- a context variable, which is a Python dictionary, containing the data to insert into the placeholders. 
+- a context variable, which is a Python dictionary, containing the data to insert into the placeholders.
 
 We'll talk more about templates and the context variable in the next section.  Let's get to creating our template so we can actually display something to the user!
 
 ### Templates
 
-A template is a text file that defines the structure or layout of a file (such as an HTML page), it uses placeholders to represent actual content. 
+A template is a text file that defines the structure or layout of a file (such as an HTML page), it uses placeholders to represent actual content.
 
 A Django application created using startapp (like the skeleton of this example) will look for templates in a subdirectory named 'templates' of your applications. For example, in the index view that we just added, the render() function will expect to find the file index.html in /locallibrary/catalog/templates/ and will raise an error if the file is not present.
 
@@ -1052,7 +1049,7 @@ You can check this by saving the previous changes and accessing 127.0.0.1:8000 i
 
 The index template will need standard HTML markup for the head and body, along with navigation sections to link to the other pages of the site (which we haven't created yet), and to sections that display introductory text and book data.
 
-Much of the HTML and navigation structure will be the same in every page of our site. Instead of duplicating boilerplate code on every page, you can use the Django templating language to declare a base template, and then extend it to replace just the bits that are different for each specific page. 
+Much of the HTML and navigation structure will be the same in every page of our site. Instead of duplicating boilerplate code on every page, you can use the Django templating language to declare a base template, and then extend it to replace just the bits that are different for each specific page.
 
 The following code snippet is a sample base template from a base_generic.html file. We'll be creating the template for LocalLibrary shortly. The sample below includes common HTML with sections for a title, a sidebar, and main contents marked with the named block and endblock template tags, shown in bold. You can leave the blocks empty, or include default content to use when rendering pages derived from the template.
 
@@ -1069,7 +1066,7 @@ The following code snippet is a sample base template from a base_generic.html fi
     </body>
     </html>
 
-When defining a template for a particular view, we first specify the base template using the extends template tag — see the code sample below. Then we declare what sections from the template we want to replace (if any), using block/endblock sections as in the base template. 
+When defining a template for a particular view, we first specify the base template using the extends template tag — see the code sample below. Then we declare what sections from the template we want to replace (if any), using block/endblock sections as in the base template.
 
 For example, the code snippet below shows how to use the extends template tag and override the content block. The generated HTML will include the code and structure defined in the base template, including the default content you defined in the title block, but the new content block in place of the default one.
 
@@ -1129,7 +1126,7 @@ The base template also references a local css file (styles.css) that provides ad
 
 ### The index template
 
-Create a new HTML file index.html in /locallibrary/catalog/templates/ and paste the following code in the file. This code extends our base template on the first line, and then replaces the default content block for the template. 
+Create a new HTML file index.html in /locallibrary/catalog/templates/ and paste the following code in the file. This code extends our base template on the first line, and then replaces the default content block for the template.
 
     {% extends "base_generic.html" %}
 
@@ -1146,7 +1143,7 @@ Create a new HTML file index.html in /locallibrary/catalog/templates/ and paste 
     </ul>
     {% endblock %}
 
-In the Dynamic content section we declare placeholders (template variables) for the information from the view that we want to include. The variables are enclosed with double brace (handlebars), as shown in bold in the code sample. 
+In the Dynamic content section we declare placeholders (template variables) for the information from the view that we want to include. The variables are enclosed with double brace (handlebars), as shown in bold in the code sample.
 
 > **Note:** You can easily recognize template variables and template tags (functions) - variables are enclosed in double braces ({{ num_books }}), and tags are enclosed in single braces with percentage signs ({% extends "base_generic.html" %}).
 
@@ -1229,7 +1226,7 @@ The final part of the tutorial will demonstrate how to paginate your data when u
 
 The book list page will display a list of all the available book records in the page, accessed using the URL: catalog/books/. The page will display a title and author for each record, with the title being a hyperlink to the associated book detail page. The page will have the same structure and navigation as all other pages in the site, and we can, therefore, extend the base template (base_generic.html) we created in the previous tutorial.
 
-### URL mapping
+### URL's mapping
 
 Open /catalog/urls.py and copy in the line shown in bold below. As for the index page, this path() function defines a pattern to match against the URL ('books/'), a view function that will be called if the URL matches (views.BookListView.as_view()), and a name for this particular mapping.
 
@@ -1294,7 +1291,7 @@ We might also override get_context_data() in order to pass additional context va
 When doing this it is important to follow the pattern used above:
 
 - First get the existing context from our superclass.
-- Then add your new context information. 
+- Then add your new context information.
 - Then return the new (updated) context.
 
 > **Note:** Check out Built-in [class-based generic views](https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/) (Django docs) for many more examples of what you can do.
@@ -1374,7 +1371,7 @@ You won't be able to build the book list yet, because we're still missing a depe
 
 The book detail page will display information about a specific book, accessed using the URL **`catalog/book/<id>`** (where `<id>` is the primary key for the book). In addition to fields in the Book model (author, summary, ISBN, language, and genre), we'll also list the details of the available copies (BookInstances) including the status, expected return date, imprint, and id. This will allow our readers to not only learn about the book, but also to confirm whether/when it is available.
 
-### URL mapping
+### URL Map2
 
 Open /catalog/urls.py and add the 'book-detail' URL mapper shown in bold below. This path() function defines a pattern, associated generic class-based detail view, and a name.
 
@@ -1389,7 +1386,6 @@ For the book-detail path the URL pattern uses a special syntax to capture the sp
 In this case we use `'<int:pk>'` to capture the book id, which must be a specially formatted string and pass it to the view as a parameter named pk (short for primary key). This is the id that is being used to store the book uniquely in the database, as defined in the Book Model.
 
 > **NOTE:** As discussed previously, our matched URL is actually catalog/book/`<digits>` (because we are in the catalog application, /catalog/ is assumed).
-
 > ***IMPORTANT:*** The generic class-based detail view expects to be passed a parameter named pk. If you're writing your own function view you can use whatever parameter name you like, or indeed pass the information in an unnamed argument.
 
 ### Advanced path matching/regular expression primer
@@ -1408,40 +1404,40 @@ The first thing to know is that regular expressions should usually be declared u
 
 The main parts of the syntax you will need to know for declaring the pattern matches are:
 
-    Symbol	    Meaning
+    Symbol     Meaning
     -------------------------------------------------------
-    ^	        Match the beginning of the text
+    ^         Match the beginning of the text
 
-    $	        Match the end of the text
+    $         Match the end of the text
     
-    \d	        Match a digit (0, 1, 2, ... 9)
+    \d         Match a digit (0, 1, 2, ... 9)
     
-    \w	        Match a word character, e.g. any upper- or lower-case character in the alphabet, digit or the underscore character (_)
+    \w         Match a word character, e.g. any upper- or lower-case character in the alphabet, digit or the underscore character (_)
     
-    +	        Match one or more of the preceding character. For example, to match one or more digits you would use \d+. To match one or more "a" characters, you could use a+
+    +         Match one or more of the preceding character. For example, to match one or more digits you would use \d+. To match one or more "a" characters, you could use a+
     
-    *	        Match zero or more of the preceding character. For example, to match nothing or a word you could use \w*
+    *         Match zero or more of the preceding character. For example, to match nothing or a word you could use \w*
 
-    ( )	        Capture the part of the pattern inside the brackets. Any captured values will be passed to the view as unnamed parameters (if multiple patterns are captured, the associated parameters will be supplied in the order that the captures were declared).
+    ( )         Capture the part of the pattern inside the brackets. Any captured values will be passed to the view as unnamed parameters (if multiple patterns are captured, the associated parameters will be supplied in the order that the captures were declared).
 
-    (?P<name>...)	Capture the pattern (indicated by ...) as a named variable (in this case "name"). The captured values are passed to the view with the name specified. Your view must therefore declare a parameter with the same name!
+    (?P<name>...) Capture the pattern (indicated by ...) as a named variable (in this case "name"). The captured values are passed to the view with the name specified. Your view must therefore declare a parameter with the same name!
     
-    [  ]	        Match against one character in the set. For example, [abc] will match on 'a' or 'b' or 'c'. [-\w] will match on the '-' character or any word character.
+    [  ]         Match against one character in the set. For example, [abc] will match on 'a' or 'b' or 'c'. [-\w] will match on the '-' character or any word character.
 
 Most other characters can be taken literally!
 
 Let's consider a few real examples of patterns:
 
-    Pattern	                    Description
-    r'^book/(?P<pk>\d+)$'	    This is the RE used in our URL mapper. It matches a string that has book/ at the start of the line (^book/), then has one or more digits (\d+), and then ends (with no non-digit characters before the end of line marker).
+    Pattern                     Description
+    r'^book/(?P<pk>\d+)$'     This is the RE used in our URL mapper. It matches a string that has book/ at the start of the line (^book/), then has one or more digits (\d+), and then ends (with no non-digit characters before the end of line marker).
 
                                 It also captures all the digits (?P<pk>\d+) and passes them to the view in a parameter named 'pk'. The captured values are always passed as a string!
 
                                 For example, this would match book/1234 , and send a variable pk='1234' to the view.
 
-    r'^book/(\d+)$'	             This matches the same URLs as the preceding case. The captured information would be sent as an unnamed argument to the view.
+    r'^book/(\d+)$'              This matches the same URLs as the preceding case. The captured information would be sent as an unnamed argument to the view.
     
-    r'^book/(?P<stub>[-\w]+)$'	This matches a string that has book/ at the start of the line (^book/), then has one or more characters that are either a '-' or a word character ([-\w]+), and then ends. It also captures this set of characters and passes them to the view in a parameter named 'stub'.
+    r'^book/(?P<stub>[-\w]+)$' This matches a string that has book/ at the start of the line (^book/), then has one or more characters that are either a '-' or a word character ([-\w]+), and then ends. It also captures this set of characters and passes them to the view in a parameter named 'stub'.
 
                                 This is a fairly typical pattern for a "stub". Stubs are URL-friendly word-based primary keys for data. You might use a stub if you wanted your book URL to be more informative. For example /catalog/book/the-secret-garden rather than /catalog/book/33.
 
@@ -1529,7 +1525,7 @@ Create the HTML file /locallibrary/catalog/templates/catalog/book_detail.html an
 ***
 **NOTE:** The author link in the template above has an empty URL because we've not yet created an author detail page to link to. Once the detail page exists we can get its URL with either of these two approaches:
 
- - Use the url template tag to reverse the 'author-detail' URL (defined in the URL mapper), passing it the author instance for the book:
+- Use the url template tag to reverse the 'author-detail' URL (defined in the URL mapper), passing it the author instance for the book:
 
         <a href="{% url 'author-detail' book.author.pk %}">{{ book.author }}</a>
 
@@ -1599,9 +1595,9 @@ The second interesting (and non-obvious) thing in the template is where we set a
 
 This function is automatically created because BookInstance.status is a choices field. Django automatically creates a method get_FOO_display() for every choices field "Foo" in a model, which can be used to get the current value of the field.
 
-### What does it look like?
+### W h a t does it look like?
 
-At this point, we should have created everything needed to display both the book list and book detail pages. Run the server (python3 manage.py runserver) and open your browser to http://127.0.0.1:8000/.
+At this point, we should have created everything needed to display both the book list and book detail pages. Run the server (python3 manage.py runserver) and open your browser to <http://127.0.0.1:8000/>.
 
 > *Warning:* Don't click any author or author detail links yet — you'll create those in the challenge!
 
@@ -1609,7 +1605,7 @@ Click the All books link to display the list of books.
 
 ### Pagination
 
-If you've just got a few records, our book list page will look fine. However, as you get into the tens or hundreds of records the page will take progressively longer to load (and have far too much content to browse sensibly). The solution to this problem is to add pagination to your list views, reducing the number of items displayed on each page. 
+If you've just got a few records, our book list page will look fine. However, as you get into the tens or hundreds of records the page will take progressively longer to load (and have far too much content to browse sensibly). The solution to this problem is to add pagination to your list views, reducing the number of items displayed on each page.
 
 Django has excellent inbuilt support for pagination. Even better, this is built into the generic class-based list views so you don't have to do very much to enable it!
 
@@ -1622,9 +1618,9 @@ Open catalog/views.py, and add the paginate_by line shown in bold below.
 
 With this addition, as soon as you have more than 10 records the view will start paginating the data it sends to the template. The different pages are accessed using GET parameters — to access page 2 you would use the URL /catalog/books/?page=2
 
-### Templates
+### T E M P L A T E S
 
-Now that the data is paginated, we need to add support to the template to scroll through the results set. Because we might want paginate all list views, we'll add this to the base template. 
+Now that the data is paginated, we need to add support to the template to scroll through the results set. Because we might want paginate all list views, we'll add this to the base template.
 
 Open /locallibrary/catalog/templates/base_generic.html and find the "content block" (as shown below).
 
@@ -1650,14 +1646,864 @@ Copy in the following pagination block immediately following the {% endblock %}.
         {% endif %}
     {% endblock %}
 
-The page_obj is a Paginator object that will exist if pagination is being used on the current page. It allows you to get all the information about the current page, previous pages, how many pages there are, etc. 
+The page_obj is a Paginator object that will exist if pagination is being used on the current page. It allows you to get all the information about the current page, previous pages, how many pages there are, etc.
 
 We use {{ request.path }} to get the current page URL for creating the pagination links. This is useful because it is independent of the object that we're paginating.
 
 That's it!
 
-### What does it look like?
+### What d o e s it look like?
 
 The screenshot below shows what the pagination looks like — if you haven't entered more than 10 titles into your database, then you can test it more easily by lowering the number specified in the paginate_by line in your catalog/views.py file. To get the below result we changed it to paginate_by = 2.
 
 The pagination links are displayed on the bottom, with next/previous links being displayed depending on which page you're on.
+
+## Part 7: Sessions framework
+
+***
+The LocalLibrary website we created in the previous tutorials allows users to browse books and authors in the catalog. While the content is dynamically generated from the database, every user will essentially have access to the same pages and types of information when they use the site.
+
+In a "real" library you may wish to provide individual users with a customized experience, based on their previous use of the site, preferences, etc. For example, you could hide warning messages that the user has previously acknowledged next time they visit the site, or store and respect their preferences (e.g. the number of search results that they want to be displayed on each page).
+
+The session framework lets you implement this sort of behavior, allowing you to store and retrieve arbitrary data on a per-site-visitor basis.
+
+### What are sessions?
+
+All communication between web browsers and servers is via HTTP, which is stateless. The fact that the protocol is stateless means that messages between the client and server are completely independent of each other— there is no notion of "sequence" or behavior based on previous messages. As a result, if you want to have a site that keeps track of the ongoing relationships with a client, you need to implement that yourself.
+
+Sessions are the mechanism used by Django (and most of the Internet) for keeping track of the "state" between the site and a particular browser. Sessions allow you to store arbitrary data per browser, and have this data available to the site whenever the browser connects. Individual data items associated with the session are then referenced by a "key", which is used both to store and retrieve the data.
+
+Django uses a cookie containing a special session id to identify each browser and its associated session with the site. The actual session data is stored in the site database by default (this is more secure than storing the data in a cookie, where they are more vulnerable to malicious users). You can configure Django to store the session data in other places (cache, files, "secure" cookies), but the default location is a good and relatively secure option.
+
+### Enabling Sessions
+
+Sessions were enabled automatically when we created the skeleton website (in tutorial 2).
+
+The configuration is set up in the INSTALLED_APPS and MIDDLEWARE sections of the project file **(locallibrary/locallibrary/settings.py)**, as shown below:
+
+    INSTALLED_APPS = [
+        ...
+        'django.contrib.sessions',
+        ....
+
+    MIDDLEWARE = [
+        ...
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        ....
+
+### Using Sessions
+
+You can access the session attribute in the view from the request parameter (an HttpRequest passed in as the first argument to the view). This session attribute represents the specific connection to the current user (or to be more precise, the connection to the current browser, as identified by the session id in the browser's cookie for this site).
+
+The session attribute is a dictionary-like object that you can read and write as many times as you like in your view, modifying it as wished. You can do all the normal dictionary operations, including clearing all data, testing if a key is present, looping through data, etc. Most of the time though, you'll just use the standard "dictionary" API to get and set values.
+
+The code fragments below show how you can get, set, and delete some data with the key "my_car", associated with the current session (browser).
+
+>**Note:**
+One of the great things about Django is that you don't need to think about the mechanisms that tie the session to your current request in your view. If we were to use the fragments below in our view, we'd know that the information about my_car is associated only with the browser that sent the current request.
+
+    # Get a session value by its key (e.g. 'my_car'), raising a KeyError if the key is not present
+    my_car = request.session['my_car']
+
+    # Get a session value, setting a default if it is not present ('mini')
+    my_car = request.session.get('my_car', 'mini')
+
+    # Set a session value
+    request.session['my_car'] = 'mini'
+
+    # Delete a session value
+    del request.session['my_car']
+
+The API also offers a number of other methods that are mostly used to manage the associated session cookie. For example, there are methods to test that cookies are supported in the client browser, to set and check cookie expiry dates, and to clear expired sessions from the data store. You can find out about the full API in [How to use sessions](https://docs.djangoproject.com/en/3.1/topics/http/sessions/) (Django docs)
+
+### Saving session data
+
+By default, Django only saves to the session database and sends the session cookie to the client when the session has been modified (assigned) or deleted. If you're updating some data using its session key as shown in the previous section, then you don't need to worry about this! For example:
+
+    # This is detected as an update to the session, so session data is saved.
+    request.session['my_car'] = 'mini'
+
+If you're updating some information within session data, then Django will not recognize that you've made a change to the session and save the data (for example, if you were to change "wheels" data inside your "my_car" data, as shown below). In this case you will need to explicitly mark the session as having been modified.
+
+    # Session object not directly modified, only data within the session. Session changes not saved!
+    request.session['my_car']['wheels'] = 'alloy'
+
+    # Set session as modified to force data updates/cookie to be saved.
+    request.session.modified = True
+
+>**Note:**
+You can change the behavior so the site will update the database/send cookie on every request by adding SESSION_SAVE_EVERY_REQUEST = True into your project settings (locallibrary/locallibrary/settings.py).
+
+### Simple example — getting visit counts
+
+As a simple real-world example we'll update our library to tell the current user how many times they have visited the LocalLibrary home page.
+
+Open **/locallibrary/catalog/views.py**, and add the lines that contain num_visits into index() (as shown below).
+
+    def index(request):
+        ...
+
+        num_authors = Author.objects.count()  # The 'all()' is implied by default.
+
+        # Number of visits to this view, as counted in the session variable.
+        num_visits = request.session.get('num_visits', 1)
+        request.session['num_visits'] = num_visits + 1
+
+        context = {
+            'num_books': num_books,
+            'num_instances': num_instances,
+            'num_instances_available': num_instances_available,
+            'num_authors': num_authors,
+            'num_visits': num_visits,
+        }
+
+        # Render the HTML template index.html with the data in the context variable.
+        return render(request, 'index.html', context=context)
+
+Here we first get the value of the 'num_visits' session key, setting the value to 1 if it has not previously been set. Each time a request is received, we then increment the value and store it back in the session (for the next time the user visits the page). The num_visits variable is then passed to the template in our context variable.
+
+>**Note:**
+We might also test whether cookies are even supported in the browser here (see [How to use sessions for examples](https://docs.djangoproject.com/en/3.1/topics/http/sessions/)) or design our UI so that it doesn't matter whether or not cookies are supported.
+
+Add the line shown at the bottom of the following block to your main HTML template **(/locallibrary/catalog/templates/index.html)** at the bottom of the "Dynamic content" section to display the num_visits context variable.
+
+    <h2>Dynamic content</h2>
+
+    <p>The library has the following record counts:</p>
+    <ul>
+    <li><strong>Books:</strong> {{ num_books }}</li>
+    <li><strong>Copies:</strong> {{ num_instances }}</li>
+    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+    <li><strong>Authors:</strong> {{ num_authors }}</li>
+    </ul>
+
+    <p>You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.</p>
+
+>**Note:** that we use the Django built-in template tag pluralize to add an "s" when the page has been visited multiple times.
+
+## Part 8: User authentication and permissions
+
+***
+In this tutorial, we'll show you how to allow users to log in to your site with their own accounts, and how to control what they can do and see based on whether or not they are logged in and their permissions. As part of this demonstration, we'll extend the LocalLibrary website, adding login and logout pages, and user- and staff-specific pages for viewing books that have been borrowed.
+
+Django provides an authentication and authorization ("permission") system, built on top of the session framework discussed in the previous tutorial, that allows you to verify user credentials and define what actions each user is allowed to perform. The framework includes built-in models for Users and Groups (a generic way of applying permissions to more than one user at a time), permissions/flags that designate whether a user may perform a task, forms and views for logging in users, and view tools for restricting content.
+
+>**Note:**
+According to Django the authentication system aims to be very generic, and so does not provide some features provided in other web authentication systems. Solutions for some common problems are available as third-party packages. For example, throttling of login attempts and authentication against third parties (e.g. OAuth).
+
+In this tutorial, we'll show you how to enable user authentication in the LocalLibrary website, create your own login and logout pages, add permissions to your models, and control access to pages. We'll use the authentication/permissions to display lists of books that have been borrowed for both users and librarians.
+
+The authentication system is very flexible, and you can build up your URLs, forms, views, and templates from scratch if you like, just calling the provided API to log in the user. However, in this article, we're going to use Django's "stock" authentication views and forms for our login and logout pages. We'll still need to create some templates, but that's pretty easy.
+
+We'll also show you how to create permissions, and check on login status and permissions in both views and templates.
+
+### Enabling authentication
+
+The authentication was enabled automatically when we created the skeleton website (in tutorial 2) so you don't need to do anything more at this point.
+
+>**Note:**
+The necessary configuration was all done for us when we created the app using the django-admin startproject command. The database tables for users and model permissions were created when we first called python manage.py migrate.
+
+The configuration is set up in the INSTALLED_APPS and MIDDLEWARE sections of the project file **(locallibrary/locallibrary/settings.py)**, as shown below:
+
+    INSTALLED_APPS = [
+        ...
+        'django.contrib.auth',  #Core authentication framework and its default models.
+        'django.contrib.contenttypes',  #Django content type system (allows permissions to be associated with models).
+        ....
+
+    MIDDLEWARE = [
+        ...
+        'django.contrib.sessions.middleware.SessionMiddleware',  #Manages sessions across requests
+        ...
+        'django.contrib.auth.middleware.AuthenticationMiddleware',  #Associates users with requests using sessions.
+        ....
+
+### Creating users and groups
+
+You already created your first user when we looked at the Django admin site in tutorial 4 (this was a superuser, created with the command python manage.py createsuperuser). Our superuser is already authenticated and has all permissions, so we'll need to create a test user to represent a normal site user. We'll be using the admin site to create our locallibrary groups and website logins, as it is one of the quickest ways to do so.
+
+>**Note:**
+You can also create users programmatically, as shown below. You would have to do this, for example, if developing an interface to allow users to create their own logins (you shouldn't give users access to the admin site).
+
+    from django.contrib.auth.models import User
+
+    # Create user and save to the database
+    user = User.objects.create_user('myusername', 'myemail@crazymail.com', 'mypassword')
+
+    # Update fields and then save again
+    user.first_name = 'John'
+    user.last_name = 'Citizen'
+    user.save()
+
+Below we'll first create a group and then a user. Even though we don't have any permissions to add for our library members yet, if we need to later, it will be much easier to add them once to the group than individually to each member.
+
+Start the development server and navigate to the admin site in your local web browser (<http://127.0.0.1:8000/admin/>). Login to the site using the credentials for your superuser account. The top level of the Admin site displays all of your models, sorted by "Django application". From the Authentication and Authorization section, you can click the Users or Groups links to see their existing records.
+
+First lets create a new group for our library members.
+
+1. Click the Add button (next to Group) to create a new Group; enter the Name "Library Members" for the group.
+2. We don't need any permissions for the group, so just press SAVE (you will be taken to a list of groups).
+
+Now let's create a user:
+
+1. Navigate back to the home page of the admin site
+2. Click the Add button next to Users to open the Add user dialog box.
+3. Enter an appropriate Username and Password/Password confirmation for your test user.
+4. Press SAVE to create the user.
+
+    The admin site will create the new user and immediately take you to a Change user screen where you can change your username and add information for the User model's optional fields. These fields include the first name, last name, email address, and the user's status and permissions (only the Active flag should be set). Further down you can specify the user's groups and permissions, and see important dates related to the user (e.g. their join date and last login date).
+
+5. In the Groups section, select Library Member group from the list of Available groups, and then press the right-arrow between the boxes to move it into the Chosen groups box.
+
+That's it! Now you have a "normal library member" account that you will be able to use for testing (once we've implemented the pages to enable them to log in).
+
+>**Note:**
+You should try creating another library member user. Also, create a group for Librarians, and add a user to that too!
+
+### Setting up your authentication views
+
+Django provides almost everything you need to create authentication pages to handle login, log out, and password management "out of the box". This includes a URL mapper, views and forms, but it does not include the templates — we have to create our own!
+
+In this section, we show how to integrate the default system into the LocalLibrary website and create the templates. We'll put them in the main project URLs.
+
+>**Note:**
+You don't have to use any of this code, but it is likely that you'll want to because it makes things a lot easier. You'll almost certainly need to change the form handling code if you change your user model (an advanced topic!) but even so, you would still be able to use the stock view functions.
+>**Note:**
+In this case, we could reasonably put the authentication pages, including the URLs and templates, inside our catalog application. However, if we had multiple applications it would be better to separate out this shared login behavior and have it available across the whole site, so that is what we've shown here!
+
+### Project Urls
+
+Add the following to the bottom of the project urls.py file **(locallibrary/locallibrary/urls.py)** file:
+
+    #Add Django site authentication urls (for login, logout, password management)
+
+    urlpatterns += [
+        path('accounts/', include('django.contrib.auth.urls')),
+    ]
+
+Navigate to the <http://127.0.0.1:8000/accounts/> URL (note the trailing forward slash!) and Django will show an error that it could not find this URL, and listing all the URLs it tried. From this you can see the URLs that will work, for example:
+
+>**Note:**
+Using the above method adds the following URLs with names in square brackets, which can be used to reverse the URL mappings. You don't have to implement anything else — the above URL mapping automatically maps the below mentioned URLs.
+
+    accounts/ login/ [name='login']
+    accounts/ logout/ [name='logout']
+    accounts/ password_change/ [name='password_change']
+    accounts/ password_change/done/ [name='password_change_done']
+    accounts/ password_reset/ [name='password_reset']
+    accounts/ password_reset/done/ [name='password_reset_done']
+    accounts/ reset/<uidb64>/<token>/ [name='password_reset_confirm']
+    accounts/ reset/done/ [name='password_reset_complete']
+
+Now try to navigate to the login URL (<http://127.0.0.1:8000/accounts/login/>). This will fail again, but with an error that tells you that we're missing the required template (registration/login.html) on the template search path. You'll see the following lines listed in the yellow section at the top:
+
+    Exception Type:    TemplateDoesNotExist
+    Exception Value:    registration/login.html
+
+The next step is to create a registration directory on the search path and then add the login.html file.
+
+### Template Directory
+
+The URLs (and implicitly, views) that we just added expect to find their associated templates in a directory /registration/ somewhere in the templates search path.
+
+For this site, we'll put our HTML pages in the templates/registration/ directory. This directory should be in your project root directory, i.e the same directory as the catalog and locallibrary folders). Please create these folders now.
+
+    Your folder structure should now look like the below:
+    locallibrary (Django project folder)
+    |_catalog
+    |_locallibrary
+    |_templates (new)
+                    |_registration
+
+To make the templates directory visible to the template loader we need to add it in the template search path. Open the project settings (/locallibrary/locallibrary/settings.py).
+
+Then import the os module (add the following line near the top of the file).
+
+    import os # needed by code below
+Update the TEMPLATES section's 'DIRS' line as shown:
+
+    ...
+    TEMPLATES = [
+      {
+       ...
+       'DIRS': [os.path.join(BASE_DIR, 'templates')],
+       'APP_DIRS': True,
+       ...
+
+### LOGIN Templates
+
+>*Important:* The authentication templates provided in this article are a very basic/slightly modified version of the Django demonstration login templates. You may need to customise them for your own use!
+
+Create a new HTML file called **/locallibrary/templates/registration/login.html** and give it the following contents:
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+
+    {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+        {% else %}
+        <p>Please login to see this page.</p>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+        </table>
+        <input type="submit" value="login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+    {% endblock %}
+
+This template shares some similarities with the ones we've seen before — it extends our base template and overrides the content block. The rest of the code is fairly standard form handling code, which we will discuss in a later tutorial. All you need to know for now is that this will display a form in which you can enter your username and password, and that if you enter invalid values you will be prompted to enter correct values when the page refreshes.
+
+If you log in using valid credentials, you'll be redirected to another page (by default this will be <http://127.0.0.1:8000/accounts/profile/>). The problem is that, by default, Django expects that upon logging in you will want to be taken to a profile page, which may or may not be the case. As you haven't defined this page yet, you'll get another error!
+
+Open the project settings (/locallibrary/locallibrary/settings.py) and add the text below to the bottom. Now when you log in you should be redirected to the site homepage by default.
+
+    # Redirect to home URL after login (Default redirects to /accounts/profile/)
+    LOGIN_REDIRECT_URL = '/'
+
+### Logout template
+
+If you navigate to the logout URL (<http://127.0.0.1:8000/accounts/logout/>) then you'll see some odd behavior — your user will be logged out sure enough, but you'll be taken to the Admin logout page. That's not what you want, if only because the login link on that page takes you to the Admin login screen (and that is only available to users who have the is_staff permission).
+
+Create and open **/locallibrary/templates/registration/logged_out.html.** Copy in the text below:
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+    <p>Logged out!</p>
+    <a href="{% url 'login'%}">Click here to login again.</a>
+    {% endblock %}
+
+This template is very simple. It just displays a message informing you that you have been logged out, and provides a link that you can press to go back to the login screen. If you go to the logout URL again you should see this page:
+
+### Password Reset Templates
+
+The default password reset system uses email to send the user a reset link. You need to create forms to get the user's email address, send the email, allow them to enter a new password, and to note when the whole process is complete.
+
+The following templates can be used as a starting point.
+
+***Password reset form***
+
+This is the form used to get the user's email address (for sending the password reset email). Create **/locallibrary/templates/registration/password_reset_form.html**, and give it the following contents:
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+    <form action="" method="post">
+    {% csrf_token %}
+    {% if form.email.errors %}
+        {{ form.email.errors }}
+    {% endif %}
+        <p>{{ form.email }}</p>
+        <input type="submit" class="btn btn-default btn-lg" value="Reset password">
+    </form>
+    {% endblock %}
+
+***Password reset done***
+
+This form is displayed after your email address has been collected. Create /l**ocallibrary/templates/registration/password_reset_done.html**, and give it the following contents:
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+    <p>We've emailed you instructions for setting your password. If they haven't arrived in a few minutes, check your spam folder.</p>
+    {% endblock %}
+
+***Password reset email***
+
+This template provides the text of the HTML email containing the reset link that we will send to users. Create **/locallibrary/templates/registration/password_reset_email.html**, and give it the following contents:
+
+    Someone asked for password reset for email {{ email }}. Follow the link below:
+    {{ protocol}}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
+
+***Password reset confirm***
+
+This page is where you enter your new password after clicking the link in the password reset email. Create **/locallibrary/templates/registration/password_reset_confirm.html**, and give it the following contents:
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+        {% if validlink %}
+            <p>Please enter (and confirm) your new password.</p>
+            <form action="" method="post">
+            {% csrf_token %}
+                <table>
+                    <tr>
+                        <td>{{ form.new_password1.errors }}
+                            <label for="id_new_password1">New password:</label></td>
+                        <td>{{ form.new_password1 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.new_password2.errors }}
+                            <label for="id_new_password2">Confirm password:</label></td>
+                        <td>{{ form.new_password2 }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Change my password" /></td>
+                    </tr>
+                </table>
+            </form>
+        {% else %}
+            <h1>Password reset failed</h1>
+            <p>The password reset link was invalid, possibly because it has already been used. Please request a new password reset.</p>
+        {% endif %}
+    {% endblock %}
+
+***Password reset complete***
+
+This is the last password-reset template, which is displayed to notify you when the password reset has succeeded. Create /**locallibrary/templates/registration/password_reset_complete.html**, and give it the following contents:
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+    <h1>The password has been changed!</h1>
+    <p><a href="{% url 'login' %}">log in again?</a></p>
+    {% endblock %}
+
+### Django Documents for Users & Passwords
+
+- Creating Users
+        >>> from django.contrib.auth.models import User
+        >>> user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+
+        # At this point, user is a User object that has already been saved
+        # to the database. You can continue to change its attributes
+        # if you want to change other fields.
+        >>> user.last_name = 'Lennon'
+        >>> user.save()
+- Creating Superusers
+
+        python manage.py createsuperuser --username=joe --email=joe@example.com
+- Changing passwords: manage.py changepassword *username*
+
+        >>> from django.contrib.auth.models import User
+        >>> u = User.objects.get(username='john')
+        >>> u.set_password('new password')
+        >>> u.save()
+
+### Testing the new authentication pages
+
+Now that you've added the URL configuration and created all these templates, the authentication pages should now just work!
+
+You can test the new authentication pages by attempting to log in to and then log out of your superuser account using these URLs:
+
+    http://127.0.0.1:8000/accounts/login/
+    http://127.0.0.1:8000/accounts/logout/
+
+You'll be able to test the password reset functionality from the link in the login page. Be aware that Django will only send reset emails to addresses (users) that are already stored in its database!
+
+>**Note:**
+The password reset system requires that your website supports email, which is beyond the scope of this article, so this part won't work yet. To allow testing, put the following line at the end of your settings.py file. This logs any emails sent to the console (so you can copy the password reset link from the console).
+
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    For more information, see Sending email (Django docs).
+
+### Testing against authenticated users
+
+This section looks at what we can do to selectively control content the user sees based on whether they are logged in or not.
+
+**Testing in templates**
+You can get information about the currently logged in user in templates with the {{ user }} template variable (this is added to the template context by default when you set up the project as we did in our skeleton).
+
+Typically you will first test against the {{ user.is_authenticated }} template variable to determine whether the user is eligible to see specific content. To demonstrate this, next we'll update our sidebar to display a "Login" link if the user is logged out, and a "Logout" link if they are logged in.
+
+Open the base template **(/locallibrary/catalog/templates/base_generic.html)** and copy the following text into the sidebar block, immediately before the endblock template tag.
+
+    <ul class="sidebar-nav">
+
+        ...
+
+    {% if user.is_authenticated %}
+        <li>User: {{ user.get_username }}</li>
+        <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+    {% else %}
+        <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+    {% endif %} 
+    </ul>
+As you can see, we use if-else-endif template tags to conditionally display text based on whether {{ user.is_authenticated }} is true. If the user is authenticated then we know that we have a valid user, so we call {{ user.get_username }} to display their name.
+
+We create the login and logout link URLs using the url template tag and the names of the respective URL configurations. Note also how we have appended ?next={{request.path}} to the end of the URLs. What this does is add a URL parameter next containing the address (URL) of the current page, to the end of the linked URL. After the user has successfully logged in/out, the views will use this "next" value to redirect the user back to the page where they first clicked the login/logout link.
+
+>**Note:**
+Try it out! If you're on the home page and you click Login/Logout in the sidebar, then after the operation completes you should end up back on the same page.
+
+### Testing in views
+
+If you're using function-based views, the easiest way to restrict access to your functions is to apply the login_required decorator to your view function, as shown below. If the user is logged in then your view code will execute as normal. If the user is not logged in, this will redirect to the login URL defined in the project settings (settings.LOGIN_URL), passing the current absolute path as the next URL parameter. If the user succeeds in logging in then they will be returned back to this page, but this time authenticated.
+
+    from django.contrib.auth.decorators import login_required
+
+    @login_required
+    def my_view(request):
+        ...
+
+>**Note:**
+You can do the same sort of thing manually by testing on request.user.is_authenticated, but the decorator is much more convenient!
+
+Similarly, the easiest way to restrict access to logged-in users in your class-based views is to derive from LoginRequiredMixin. You need to declare this mixin first in the superclass list, before the main view class.
+
+    from django.contrib.auth.mixins import LoginRequiredMixin
+
+    class MyView(LoginRequiredMixin, View):
+        ...
+
+This has exactly the same redirect behavior as the login_required decorator. You can also specify an alternative location to redirect the user to if they are not authenticated (login_url), and a URL parameter name instead of "next" to insert the current absolute path (redirect_field_name).
+
+    class MyView(LoginRequiredMixin, View):
+        login_url = '/login/'
+        redirect_field_name = 'redirect_to'
+
+For additional detail, check out the Django docs here.
+
+### Example — listing the current user's books
+
+Now that we know how to restrict a page to a particular user, let's create a view of the books that the current user has borrowed.
+
+Unfortunately, we don't yet have any way for users to borrow books! So before we can create the book list we'll first extend the BookInstance model to support the concept of borrowing and use the Django Admin application to loan a number of books to our test user.
+
+***Models***
+First, we're going to have to make it possible for users to have a BookInstance on loan (we already have a status and a due_back date, but we don't yet have any association between this model and a User. We'll create one using a ForeignKey (one-to-many) field. We also need an easy mechanism to test whether a loaned book is overdue.
+
+Open **catalog/models.py**, and import the User model from django.contrib.auth.models (add this just below the previous import line at the top of the file, so User is available to subsequent code that makes use of it):
+
+    from django.contrib.auth.models import User
+
+Next, add the borrower field to the BookInstance model:
+
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+While we're here, let's add a property that we can call from our templates to tell if a particular book instance is overdue. While we could calculate this in the template itself, using a property as shown below will be much more efficient.
+
+Add this somewhere near the top of the file:
+
+    from datetime import date
+
+Now add the following property definition to the BookInstance class:
+
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
+
+>**Note:**
+We first verify whether due_back is empty before making a comparison. An empty due_back field would cause Django to throw an error instead of showing the page: empty values are not comparable. This is not something we would want our users to experience!
+
+Now that we've updated our models, we'll need to make fresh migrations on the project and then apply those migrations:
+
+    python3 manage.py makemigrations
+    python3 manage.py migrate
+
+***Admin***
+
+Now open catalog/admin.py, and add the borrower field to the BookInstanceAdmin class in both the list_display and the fieldsets as shown below. This will make the field visible in the Admin section, allowing us to assign a User to a BookInstance when needed.
+
+    @admin.register(BookInstance)
+    class BookInstanceAdmin(admin.ModelAdmin):
+        list_display = ('book', 'status', 'borrower', 'due_back', 'id')
+        list_filter = ('status', 'due_back')
+
+        fieldsets = (
+            (None, {
+                'fields': ('book','imprint', 'id')
+            }),
+            ('Availability', {
+                'fields': ('status', 'due_back','borrower')
+            }),
+        )
+***Loan a few books***
+
+Now that it's possible to loan books to a specific user, go and loan out a number of BookInstance records. Set their borrowed field to your test user, make the status "On loan", and set due dates both in the future and the past.
+
+>**Note:**
+We won't spell the process out, as you already know how to use the Admin site!
+
+***On loan view***
+
+Now we'll add a view for getting the list of all books that have been loaned to the current user. We'll use the same generic class-based list view we're familiar with, but this time we'll also import and derive from LoginRequiredMixin, so that only a logged in user can call this view. We will also choose to declare a template_name, rather than using the default, because we may end up having a few different lists of BookInstance records, with different views and templates.
+
+Add the following to catalog/views.py:
+
+    from django.contrib.auth.mixins import LoginRequiredMixin
+
+    class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+        """Generic class-based view listing books on loan to current user."""
+        model = BookInstance
+        template_name ='catalog/bookinstance_list_borrowed_user.html'
+        paginate_by = 10
+
+        def get_queryset(self):
+            return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+
+In order to restrict our query to just the BookInstance objects for the current user, we re-implement get_queryset() as shown above. Note that "o" is the stored code for "on loan" and we order by the due_back date so that the oldest items are displayed first.
+
+### URL conf for on loan books
+
+Now open /catalog/urls.py and add a path() pointing to the above view (you can just copy the text below to the end of the file).
+
+    urlpatterns += [
+        path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
+    ]
+
+### Template for on-loan books
+
+Now, all we need to do for this page is add a template. First, create the template file /catalog/templates/catalog/bookinstance_list_borrowed_user.html and give it the following contents:
+
+    {% extends "base_generic.html" %}
+
+    {% block content %}
+        <h1>Borrowed books</h1>
+
+        {% if bookinstance_list %}
+        <ul>
+
+        {% for bookinst in bookinstance_list %}
+        <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+            <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})
+        </li>
+        {% endfor %}
+        </ul>
+
+        {% else %}
+        <p>There are no books borrowed.</p>
+        {% endif %}
+    {% endblock %}
+
+This template is very similar to those we've created previously for the Book and Author objects. The only thing "new" here is that we check the method we added in the model (bookinst.is_overdue) and use it to change the color of overdue items.
+
+When the development server is running, you should now be able to view the list for a logged in user in your browser at <http://127.0.0.1:8000/catalog/mybooks/>. Try this out with your user logged in and logged out (in the second case, you should be redirected to the login page)
+
+### Add the list to the sidebar
+
+The very last step is to add a link for this new page into the sidebar. We'll put this in the same section where we display other information for the logged in user.
+
+Open the base template (/locallibrary/catalog/templates/base_generic.html) and add the line in bold to the sidebar as shown.
+
+    <ul class="sidebar-nav">
+        {% if user.is_authenticated %}
+        <li>User: {{ user.get_username }}</li>
+        <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
+        <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+        {% endif %}
+    </ul>
+
+### Permissions
+
+Permissions are associated with models and define the operations that can be performed on a model instance by a user who has the permission. By default, Django automatically gives add, change, and delete permissions to all models, which allow users with the permissions to perform the associated actions via the admin site. You can define your own permissions to models and grant them to specific users. You can also change the permissions associated with different instances of the same model.
+
+Testing on permissions in views and templates is then very similar for testing on the authentication status (and in fact, testing for a permission also tests for authentication).
+
+**Models**
+Defining permissions is done on the model "class Meta" section, using the permissions field. You can specify as many permissions as you need in a tuple, each permission itself being defined in a nested tuple containing the permission name and permission display value. For example, we might define a permission to allow a user to mark that a book has been returned as shown:
+
+    class BookInstance(models.Model):
+        ...
+        class Meta:
+            ...
+            permissions = (("can_mark_returned", "Set book as returned"),)
+
+We could then assign the permission to a "Librarian" group in the Admin site.
+
+Open the **catalog/models.py**, and add the permission as shown above. You will need to re-run your migrations (call **python3 manage.py makemigrations and python3 manage.py migrate**) to update the database appropriately.
+
+**Templates**
+The current user's permissions are stored in a template variable called {{ perms }}. You can check whether the current user has a particular permission using the specific variable name within the associated Django "app" — e.g. {{ perms.catalog.can_mark_returned }} will be True if the user has this permission, and False otherwise. We typically test for the permission using the template {% if %} tag as shown:
+
+    {% if perms.catalog.can_mark_returned %}
+        <!-- We can mark a BookInstance as returned. -->
+        <!-- Perhaps add code to link to a "book return" view here. -->
+    {% endif %}
+
+**Views**
+Permissions can be tested in function view using the permission_required decorator or in a class-based view using the PermissionRequiredMixin. The pattern are the same as for login authentication, though of course, you might reasonably have to add multiple permissions.
+
+**Function view decorator:**
+
+    from django.contrib.auth.decorators import permission_required
+
+    @permission_required('catalog.can_mark_returned')
+    @permission_required('catalog.can_edit')
+    def my_view(request):
+        ...
+
+A permission-required mixin for class-based views.
+
+    from django.contrib.auth.mixins import PermissionRequiredMixin
+
+    class MyView(PermissionRequiredMixin, View):
+        permission_required = 'catalog.can_mark_returned'
+        # Or multiple permissions
+        permission_required = ('catalog.can_mark_returned', 'catalog.can_edit')
+        # Note that 'catalog.can_edit' is just an example
+        # the catalog application doesn't have such permission!
+
+>**Note:**
+There is a small default difference in the behavior above. By default for a logged-in user with a permission violation:
+
+- @permission_required redirects to login screen (HTTP Status 302).
+- PermissionRequiredMixin returns 403 (HTTP Status Forbidden).
+
+Normally you will want the PermissionRequiredMixin behavior: return 403 if a user is logged in but does not have the correct permission. To do this for a function view use @login_required and @permission_required with raise_exception=True as shown:
+
+    from django.contrib.auth.decorators import login_required, permission_required
+
+    @login_required
+    @permission_required('catalog.can_mark_returned', raise_exception=True)
+    def my_view(request):
+        ...
+
+## Part 9: Working with forms
+
+Working with forms can be complicated! Developers need to write HTML for the form, validate and properly sanitize entered data on the server (and possibly also in the browser), repost the form with error messages to inform users of any invalid fields, handle the data when it has successfully been submitted, and finally respond to the user in some way to indicate success. Django Forms take a lot of the work out of all these steps, by providing a framework that lets you define forms and their fields programmatically, and then use these objects to both generate the form HTML code and handle much of the validation and user interaction.
+
+In this tutorial, we're going to show you a few of the ways you can create and work with forms, and in particular, how the generic editing views can significantly reduce the amount of work you need to do to create forms to manipulate your models. Along the way, we'll extend our LocalLibrary application by adding a form to allow librarians to renew library books, and we'll create pages to create, edit and delete books and authors (reproducing a basic version of the form shown above for editing books).
+
+### HTML Forms
+
+First a brief overview of [HTML Forms](https://developer.mozilla.org/en-US/docs/Learn/Forms). Consider a simple HTML form, with a single text field for entering the name of some "team", and its associated label:
+
+The form is defined in HTML as a collection of elements inside `<form>...</form>` tags, containing at least one input element of type="submit".
+
+    <form action="/team_name_url/" method="post">
+        <label for="team_name">Enter name: </label>
+        <input id="team_name" type="text" name="name_field" value="Default name for team.">
+        <input type="submit" value="OK">
+    </form>
+
+While here we just have one text field for entering the team name, a form may have any number of other input elements and their associated labels. The field's type attribute defines what sort of widget will be displayed. The name and id of the field are used to identify the field in JavaScript/CSS/HTML, while value defines the initial value for the field when it is first displayed. The matching team label is specified using the label tag (see "Enter name" above), with a for field containing the id value of the associated input.
+
+The submit input will be displayed as a button (by default) that can be pressed by the user to upload the data in all the other input elements in the form to the server (in this case, just the team_name). The form attributes define the HTTP method used to send the data and the destination of the data on the server (action):
+
+- action: The resource/URL where data is to be sent for processing when the form is submitted. If this is not set (or set to an empty string), then the form will be submitted back to the current page URL.
+- method: The HTTP method used to send the data: post or get.
+  - The POST method should always be used if the data is going to result in a change to the server's database because this can be made more resistant to cross-site forgery request attacks.
+  - The GET method should only be used for forms that don't change user data (e.g. a search form). It is recommended for when you want to be able to bookmark or share the URL.
+
+The role of the server is first to render the initial form state — either containing blank fields or pre-populated with initial values. After the user presses the submit button, the server will receive the form data with values from the web browser and must validate the information. If the form contains invalid data, the server should display the form again, this time with user-entered data in "valid" fields and messages to describe the problem for the invalid fields. Once the server gets a request with all valid form data, it can perform an appropriate action (e.g. saving the data, returning the result of a search, uploading a file, etc.) and then notify the user.
+
+As you can imagine, creating the HTML, validating the returned data, re-displaying the entered data with error reports if needed, and performing the desired operation on valid data can all take quite a lot of effort to "get right". Django makes this a lot easier, by taking away some of the heavy lifting and repetitive code!
+
+### Django form handling process
+
+Django's form handling uses all of the same techniques that we learned about in previous tutorials (for displaying information about our models): the view gets a request, performs any actions required including reading data from the models, then generates and returns an HTML page (from a template, into which we pass a context containing the data to be displayed). What makes things more complicated is that the server also needs to be able to process data provided by the user, and redisplay the page if there are any errors.
+
+A process flowchart of how Django handles form requests is shown below, starting with a request for a page containing a form (shown in green).
+
+![Form/Django](../../static/catalog/images/form.png)
+
+Based on the diagram above, the main things that Django's form handling does are:
+
+1. Display the default form the first time it is requested by the user.
+   - The form may contain blank fields (e.g. if you're creating a new record), or it may be pre-populated with initial values (e.g. if you are changing a record, or have useful default initial values).
+   - The form is referred to as unbound at this point, because it isn't associated with any user-entered data (though it may have initial values).
+2. Receive data from a submit request and bind it to the form.
+   - Binding data to the form means that the user-entered data and any errors are available when we need to redisplay the form.
+3. Clean and validate the data.
+   - Cleaning the data performs sanitization of the input (e.g. removing invalid characters that might be used to send malicious content to the server) and converts them into consistent Python types.
+   - Validation checks that the values are appropriate for the field (e.g. are in the right date range, aren't too short or too long, etc.)
+4. If any data is invalid, re-display the form, this time with any user populated values and error messages for the problem fields.
+5. If all data is valid, perform required actions (e.g. save the data, send an email, return the result of a search, upload a file, etc.)
+6. Once all actions are complete, redirect the user to another page.
+
+Django provides a number of tools and approaches to help you with the tasks detailed above. The most fundamental is the Form class, which simplifies both generation of form HTML and data cleaning/validation. In the next section, we describe how forms work using the practical example of a page to allow librarians to renew books.
+
+>**Note:**
+Understanding how Form is used will help you when we discuss Django's more "high level" form framework classes.
+
+### Renew-book form using a Form and function view
+
+Next, we're going to add a page to allow librarians to renew borrowed books. To do this we'll create a form that allows users to enter a date value. We'll seed the field with an initial value 3 weeks from the current date (the normal borrowing period), and add some validation to ensure that the librarian can't enter a date in the past or a date too far in the future. When a valid date has been entered, we'll write it to the current record's BookInstance.due_back field.
+
+The example will use a function-based view and a Form class. The following sections explain how forms work, and the changes you need to make to our ongoing LocalLibrary project.
+
+**Form:**
+The Form class is the heart of Django's form handling system. It specifies the fields in the form, their layout, display widgets, labels, initial values, valid values, and (once validated) the error messages associated with invalid fields. The class also provides methods for rendering itself in templates using predefined formats (tables, lists, etc.) or for getting the value of any element (enabling fine-grained manual rendering).
+
+**Declaring a Form:**
+The declaration syntax for a Form is very similar to that for declaring a Model, and shares the same field types (and some similar parameters). This makes sense because in both cases we need to ensure that each field handles the right types of data, is constrained to valid data, and has a description for display/documentation.
+
+Form data is stored in an application's forms.py file, inside the application directory. Create and open the file **locallibrary/catalog/forms.py**. To create a Form, we import the forms library, derive from the Form class, and declare the form's fields. A very basic form class for our library book renewal form is shown below — add this to your new file:
+
+    from django import forms
+
+    class RenewBookForm(forms.Form):
+        renewal_date = forms.DateField(help_text="Enter a date between now and 4 weeks (default 3).")
+
+**Form fields:**
+In this case, we have a single DateField for entering the renewal date that will render in HTML with a blank value, the default label "Renewal date:", and some helpful usage text: "Enter a date between now and 4 weeks (default 3 weeks)." As none of the other optional arguments are specified the field will accept dates using the input_formats: YYYY-MM-DD (2016-11-06), MM/DD/YYYY (02/26/2016), MM/DD/YY (10/25/16), and will be rendered using the default widget: DateInput.
+
+There are many other types of form fields, which you will largely recognize from their similarity to the equivalent model field classes: BooleanField, CharField, ChoiceField, TypedChoiceField, DateField, DateTimeField, DecimalField, DurationField, EmailField, FileField, FilePathField, FloatField, ImageField, IntegerField, GenericIPAddressField, MultipleChoiceField, TypedMultipleChoiceField, NullBooleanField, RegexField, SlugField, TimeField, URLField, UUIDField, ComboField, MultiValueField, SplitDateTimeField, ModelMultipleChoiceField, ModelChoiceField.
+
+The arguments that are common to most fields are listed below (these have sensible default values):
+
+- required: If True, the field may not be left blank or given a None value. Fields are required by default, so you would set required=False to allow blank values in the form.
+- label: The label to use when rendering the field in HTML. If a label is not specified, Django will create one from the field name by capitalizing the first letter and replacing underscores with spaces (e.g. Renewal date).
+- label_suffix: By default, a colon is displayed after the label (e.g. Renewal date:). This argument allows you to specify a different suffix containing other character(s).
+- initial: The initial value for the field when the form is displayed.
+- widget: The display widget to use.
+- help_text (as seen in the example above): Additional text that can be displayed in forms to explain how to use the field.
+- error_messages: A list of error messages for the field. You can override these with your own messages if needed.
+- validators: A list of functions that will be called on the field when it is validated.
+- localize: Enables the localization of form data input (see link for more information).
+- disabled: The field is displayed but its value cannot be edited if this is True. The default is False.
+
+**Validation:**
+Django provides numerous places where you can validate your data. The easiest way to validate a single field is to override the method `clean_<fieldname>()` for the field you want to check. So for example, we can validate that entered renewal_date values are between now and 4 weeks by implementing clean_renewal_date() as shown below.
+
+Update your forms.py file so it looks like this:
+
+    import datetime
+
+    from django import forms
+    from django.core.exceptions import ValidationError
+    from django.utils.translation import ugettext_lazy as _
+
+    class RenewBookForm(forms.Form):
+        renewal_date = forms.DateField(help_text="Enter a date between now and 4 weeks (default 3).")
+
+        def clean_renewal_date(self):
+            data = self.cleaned_data['renewal_date']
+
+            # Check if a date is not in the past.
+            if data < datetime.date.today():
+                raise ValidationError(_('Invalid date - renewal in past'))
+
+            # Check if a date is in the allowed range (+4 weeks from today).
+            if data > datetime.date.today() + datetime.timedelta(weeks=4):
+                raise ValidationError(_('Invalid date - renewal more than 4 weeks ahead'))
+
+            # Remember to always return the cleaned data.
+            return data
+
+There are two important things to note. The first is that we get our data using self.cleaned_data['renewal_date'] and that we return this data whether or not we change it at the end of the function. This step gets us the data "cleaned" and sanitized of potentially unsafe input using the default validators, and converted into the correct standard type for the data (in this case a Python datetime.datetime object).
+
+The second point is that if a value falls outside our range we raise a ValidationError, specifying the error text that we want to display in the form if an invalid value is entered. The example above also wraps this text in one of Django's translation functions ugettext_lazy() (imported as _()), which is good practice if you want to translate your site later.
+
+>**Note:**
+There are numerous other methods and examples for validating forms in Form and field validation (Django docs). For example, in cases where you have multiple fields that depend on each other, you can override the Form.clean() function and again raise a ValidationError.

@@ -1,3 +1,5 @@
+from datetime import date
+from django.contrib.auth.models import User
 import uuid # Required for unique book instances
 from django.db import models
 
@@ -20,7 +22,6 @@ class Language(models.Model):
     def __str__(self):
         return self.name
 
-
 class Book(models.Model):
     """Model representing a book (but not a specific copy of a book)."""
     title = models.CharField(max_length=200)
@@ -42,13 +43,22 @@ class Book(models.Model):
     language = models.ManyToManyField(
         Language, help_text='Select Language for this book')
     
+    def get_language(self):
+        """Create a string for the Genre. This is required to display genre in Admin."""
+        return ', '.join(language.name for language in self.language.all())
+
+    get_language.short_description = 'Language'
+    
+    class Meta:
+        ordering = ['title', 'author']
+    
     def __str__(self):
         """String for representing the Model object."""
         return self.title
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
-        return reverse('book-detail', args=[str(self.id)])
+        return reverse('book-detail', kwargs= {'pk': str(self.id)})
     
     def display_genre(self):
         """Create a string for the Genre. This is required to display genre in Admin."""
@@ -56,12 +66,6 @@ class Book(models.Model):
 
     display_genre.short_description = 'Genre'
 
-    def get_language(self):
-        """Create a string for the Genre. This is required to display genre in Admin."""
-        return ', '.join(language.name for language in self.language.all()[:3])
-
-    get_language.short_description = 'Language'
-    
 
 class BookInstance(models.Model):
     """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
@@ -70,6 +74,8 @@ class BookInstance(models.Model):
     book = models.ForeignKey('Book', on_delete=models.RESTRICT, null=True)
     imprint = models.IntegerField()
     due_back = models.DateField(null=True, blank=True)
+    borrower = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True)
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -88,10 +94,17 @@ class BookInstance(models.Model):
 
     class Meta:
         ordering = ['due_back']
+        permissions = (("can_mark_returned", "Set book as returned"),)
 
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
+    
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
 
 
 class Author(models.Model):
@@ -106,7 +119,7 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
-        return reverse('author-detail', args=[str(self.id)])
+        return reverse('author-detail', kwargs={'pk': str(self.id)})
 
     def __str__(self):
         """String for representing the Model object."""
