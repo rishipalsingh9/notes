@@ -29,30 +29,31 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'authors' %}"> All Authors </a>
                   </li>
-                </ul>
-                <ul>
                   {% if user.is_authenticated %}
-                    <li>User: {{ user.get_username }}</li>
-                    <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
-                    <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-                    {% else %}
-                    <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-                  {% endif %} 
+                      <li>User: {{ user.get_username }}</li>
+                      <li class="nav-item"><a class="nav-link" style="color: white" href="{% url 'my-borrowed' %}">My Borrowed</a></li>
+                      <li class="nav-item"><a class="nav-link" style="color: white" href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+                      {% else %}
+                      <li class="nav-item"><a class="nav-link" style="color: white" href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+                    {% endif %}
                 </ul>
+                <ul class="d-flex">
+                    
+                  </ul>
               </div>
             </div>
           </nav>
           
         </header>
     {% endblock %}
-    <div class="container-fluid">
+    <div class="container-fluid ms-3 mt-3">
       <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-10 p-3">
           {% block content %}
             {% block pagination %}
               {% if is_paginated %}
                 <div class="pagination">
-                    <span class="page-links">
+                    <span class="page-links p-3">
                         {% if page_obj.has_previous %}
                             <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
                         {% endif %}
