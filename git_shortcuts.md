@@ -19,3 +19,7 @@ To create Branch
 4. git checkout -b beta (shortcut of step 3)
 5. git checkout to swtich between branches
 6. To push data onto branch. git push --set-upstream origin alpha (where alpha is file name)
+
+
+>Reference: Detail taken from youtube channel of Alessandro Castellani
+http://www.alecaddd.com/support-me/
