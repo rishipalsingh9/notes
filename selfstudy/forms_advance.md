@@ -1331,7 +1331,6 @@ Defaults to json.JSONDecoder.
 
 >*Note:*
 If you use a ModelForm, the encoder and decoder from JSONField will be used.
-
 >*User friendly forms:*
 JSONField is not particularly user friendly in most cases. However, it is a useful way to format data from a client-side widget for submission to the server.
 
@@ -1547,3 +1546,119 @@ A default incomplete error message can be defined on the MultiValueField subclas
                 error_messages=error_messages, fields=fields,
                 require_all_fields=False, **kwargs
             )
+
+**widget:**
+Must be a subclass of django.forms.MultiWidget. Default value is TextInput, which probably is not very useful in this case.
+
+**compress(data_list):**
+Takes a list of valid values and returns a “compressed” version of those values – in a single value. For example, SplitDateTimeField is a subclass which combines a time field and a date field into a datetime object.
+
+This method must be implemented in the subclasses.
+
+### SplitDateTimeField
+
+- Default: [SplitDateTimeWidget](https://docs.djangoproject.com/en/3.2/ref/forms/widgets/#django.forms.SplitDateTimeWidget)
+- Empty Value: None
+- Normalize to: A Python datetime.datetime object
+- Validates: that given value is datetime.datetime or string in the format of datetime.
+- Error message keys: required, invalid, invalid_date, invalid_time
+
+Takes two optional arguments:
+
+**input_date_formats:**
+
+- A list of formats used to attempt to convert a string to a valid datetime.date object.
+- If no input_date_formats argument is provided, the default input formats for DateField are used.
+
+**input_time_formats:**
+
+- A list of formats used to attempt to convert a string to a valid datetime.time object.
+- If no input_time_formats argument is provided, the default input formats for TimeField are used.
+
+***
+
+## Model Form Functions
+
+### model_form factory
+
+(model, form=ModelForm, fields=None, exclude=None, formfield_callback=None, widgets=None, localized_fields=None, labels=None, help_texts=None, error_messages=None, field_classes=None)
+
+- Returns a ModelForm class for the given model. You can optionally pass a form argument to use as a starting point for constructing the ModelForm.
+- Fields: is an optional list of fields name. If provided, only the names field will be included in the returned fields.
+- excludes: is an optional list of fields name. If provided, the names field will be excluded from the return fields, even if they are listed in the fields arguments.
+- formfield_callback: is a callable that takes models field & returns a form field.
+- widgets: is a dict of model field names mapped to widget.
+- localized_fields: is a list of fields which should be localized.
+- labels: is a dicst of model field names mapped to labels.
+- help_texts: is a dict of model field names mapped to a help_texts.
+- error_messages: mapped to dict of error messages.
+- field_classes: mapped to form field class
+
+See the [modelform factory function](https://docs.djangoproject.com/en/3.2/topics/forms/modelforms/#modelforms-factory) to understand with example.
+
+### modelformset_factory
+
+(model, form=ModelForm, formfield_callback=None, formset=BaseModelFormSet, extra=1, can_delete=False, can_order=False, max_num=None, fields=None, exclude=None, widgets=None, validate_max=False, localized_fields=None, labels=None, help_texts=None, error_messages=None, min_num=None, validate_min=False, field_classes=None, absolute_max=None, can_delete_extra=True)
+
+- Returns: a formset class for the given model class.
+- Arguments model:, form, fields, exclude, formfield_callback, widgets, localized_fields, labels, help_texts, error_messages, and field_classes are all passed through to modelform_factory().
+- Arguments formset:extra, can_delete, can_order, max_num, validate_max, min_num, validate_min, absolute_max, and can_delete_extra are passed through to formset_factory(). see [formsets](https://docs.djangoproject.com/en/3.2/topics/forms/formsets/) for more details.
+
+### inlineformset_factory
+
+(parent_model, model, form=ModelForm, formset=BaseInlineFormSet, fk_name=None, fields=None, exclude=None, extra=3, can_order=False, can_delete=True, max_num=None, formfield_callback=None, widgets=None, validate_max=False, localized_fields=None, labels=None, help_texts=None, error_messages=None, min_num=None, validate_min=False, field_classes=None, absolute_max=None, can_delete_extra=True)
+
+Returns an InlineFormSet using modelformset_factory() with defaults of formset=BaseInlineFormSet, can_delete=True, and extra=3.
+
+If your model has more than one ForeignKey to the parent_model, you must specify a fk_name.
+
+***
+
+## The Form Rendering API
+
+Djangos form widgets are rendered using Django's [template engines system](https://docs.djangoproject.com/en/3.2/topics/templates/).
+The form rendering process can be customized at several levels:
+
+- Widgets can specify custom template names.
+- Forms & widgets can specify custome renderer classes.
+- A widget template can be overridden by project. (Reusable applications typically shouldn’t override built-in templates because they might conflict with a project’s custom templates.)
+
+### The Low-Level Render API
+
+- The rendering of form templates is controlled by customisable renderer class. 
+- Custom renderer can be specified by updating the [Form_Renderer](https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-FORM_RENDERER) settings.
+- It defaults to 'django.forms.renderers.DjangoTemplates'.
+
+You can also provide a custom renderer by setting the Form.default_renderer attribute or by using the renderer argument of Widget.render().
+
+Use one of the built-in template form renderers or implement your own. Custom renderers must implement a render(template_name, context, request=None) method. It should return a rendered templates (as a string) or raise TemplateDoesNotExist.
+
+### Built-in Template from renderers
+
+**class DjangoTemplates**:
+
+- This renderer uses a standalone DjangoTemplates engine(unconnected to what you might have configured in the TEMPLATES setting).
+- Loads templates first from the built-in form templates dir in django/forms/templates.
+- And than from the installed apps, templates dir using the app_directories loader.
+
+If you want to render templates with customizations from your TEMPLATES setting, such as context processors for example, use the TemplatesSetting renderer.
+
+**class Jinja2**:
+
+- same as DjangoTemplates, except that it uses Jinja2 backend.
+- located in the django/forms/jinja2
+- installed apps can provide templates in jinja2 dir.
+- To use this backend, all widgets & third parties must have Jinja2 templates.
+- Unless you provide your own Jinja2 templates for widgets that don’t have any, you can’t use this renderer.
+  - For example, django.contrib.admin doesn’t include Jinja2 templates for its widgets due to their usage of Django template tags.
+
+**class TemplateSetting**:
+
+- The renderer gives you control of how widget templates are sourced.
+- It uses get_template() to find the widget templates based on what's configuired in the Templates setting.
+- Using this renderer along with the built-in widget templates requires either:
+  - 'django.forms' in INSTALLED_APPS and at least one engine with APP_DIRS=True.
+  - Adding the built-in widgets templates directory in DIRS of one of your template engines. To generate that path:
+ 
+            import django
+            django.__path__[0] + '/forms/templates'  # or '/forms/jinja2'
