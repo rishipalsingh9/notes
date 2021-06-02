@@ -34,6 +34,10 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'mdntuto.apps.MdntutoConfig',
     'catalog.apps.CatalogConfig',
+    'crispy_forms',
+    'myappforms.apps.MyappformsConfig',
+    'myappformstut.apps.MyappformstutConfig',
+    'rk001.apps.Rk001Config',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -102,6 +106,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = "info.europeous@gmail.com"
+EMAIL_HOST_PASSWORD = 'London@2311Can'
+EMAIL_PORT = '587'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -131,3 +141,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 # or you can set it to any route you want to redirect to after logout
 LOGOUT_REDIRECT_URL = ''
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = (
+    'bootstrap',
+    'bootstrap4',
+    'foundation-6',
+    'uni_form',
+)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+CRISPY_CLASS_CONVERTERS = {
+    'inputelement': None,
+    'errorcondition': 'is-invalid-input',
+}

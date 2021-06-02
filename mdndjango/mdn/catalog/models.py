@@ -126,8 +126,7 @@ class Author(models.Model):
         return f'{self.last_name}, {self.first_name}'
 
 class Signup(models.Model):
-    name = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                on_delete=models.CASCADE,  null=False)
+    name = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  null=False)
     email_address = models.EmailField(max_length=200, help_text='Enter Valid Email Address', null=False)
     phone_number = models.SmallIntegerField(null=False)
     date_of_birth = models.DateTimeField(null=True, blank=True, help_text='Enter your date of birth')

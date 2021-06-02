@@ -1,0 +1,78 @@
+{% load crispy_forms_tags %}
+
+{{ form.non_field_errors }}
+
+<h1>Form Crispy | Bootstrap 4</h1>
+<form action="#" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Submit">
+</form>
+<br>
+<h1>Form Manual</h1>
+<form action="#" method="POST">
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.subject.errors }}
+        <label for="{{ form.subject.id_label }}">Email Subject:</label>
+        {{ form.subject }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.message.errors }}
+        <label for="{{ form.message.id_for_label }}">Your message:</label>
+        {{ form.message }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.sender.errors }}
+        <label for="{{ form.sender.id_for_label }}">Your email address:</label>
+        {{ form.sender }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.cc_myself.errors }}
+        <label for="{{ form.cc_myself.id_for_label }}">CC yourself?</label>
+        {{ form.cc_myself }}
+    </div>
+    <input type="submit" value="Submit">
+</form>
+
+<br>
+<h1>Form with Labels shortcut</h1>
+
+<form action="" method="post">
+    <div class="fieldWrapper">
+        {{ form.subject.errors }}
+        {{ form.subject.label_tag }}
+        {{ form.subject }}
+    </div>
+    <br>
+    <h1>Form use looping through each field in turn using a {<code>% for %</code>} loop:</h1>
+    <div class="fieldWrapper">
+        {% for field in form %}
+            <div class="fieldWrapper">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {{ field.value }}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <br>
+        <input type="submit" value="Submit">
+    </div>
+</form>
+
+<br>
+<h1>Looping over hidden fields: Find docs in form_basis.md at the end</h1>
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+    {# Include the visible fields #}
+    {% for field in form.visible_fields %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endfor %}
+<br>
+<input type="submit" value="Submit">

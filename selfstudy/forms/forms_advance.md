@@ -1625,7 +1625,7 @@ The form rendering process can be customized at several levels:
 
 ### The Low-Level Render API
 
-- The rendering of form templates is controlled by customisable renderer class. 
+- The rendering of form templates is controlled by customisable renderer class.
 - Custom renderer can be specified by updating the [Form_Renderer](https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-FORM_RENDERER) settings.
 - It defaults to 'django.forms.renderers.DjangoTemplates'.
 
@@ -1659,6 +1659,6 @@ If you want to render templates with customizations from your TEMPLATES setting,
 - Using this renderer along with the built-in widget templates requires either:
   - 'django.forms' in INSTALLED_APPS and at least one engine with APP_DIRS=True.
   - Adding the built-in widgets templates directory in DIRS of one of your template engines. To generate that path:
- 
+
             import django
             django.__path__[0] + '/forms/templates'  # or '/forms/jinja2'

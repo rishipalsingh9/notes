@@ -1,7 +1,6 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from catalog.models import Author
 from django.urls import reverse_lazy
-from catalog.forms import RenewBookForm
+from .forms import RenewBookForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
@@ -13,7 +12,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.http import HttpResponse
 from django.shortcuts import render
-from catalog.models import *  # star stands for importing all models from catalog.models
+from .models import *  # star stands for importing all models from catalog.models
 
 # Create your views here.
 

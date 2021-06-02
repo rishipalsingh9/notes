@@ -23,6 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('mdntuto/', include('mdntuto.urls')),
     path('catalog/', include('catalog.urls')),
+    path('myappforms/', include('myappforms.urls')),
+    path('myappformstut/', include('myappformstut.urls')),
+    path('rk001/', include('rk001.urls')),
     path('', RedirectView.as_view(url='/catalog/', permanent=True)),
 ]
 
