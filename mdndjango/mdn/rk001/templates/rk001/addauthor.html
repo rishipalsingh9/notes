@@ -2,6 +2,6 @@
 
 <form action="#" method="POST">
     {% csrf_token %}
-    {{ form|crispy }}
+    {{ form.as_table }}
     <input type="submit" value="SAVE">
 </form>
