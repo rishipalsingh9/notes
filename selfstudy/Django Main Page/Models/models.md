@@ -265,3 +265,230 @@ Generally, ManyToManyField instances should go in the object that’s going to b
 See the Many-to-many relationship model example for a full example.
 
 ManyToManyField fields also accept a number of extra arguments which are explained in the model field reference. These options help define how the relationship should work; all are optional.
+
+### Extra Fields on Many-To-Many Relationships
+
+When you’re only dealing with many-to-many relationships such as mixing and matching pizzas and toppings, a standard ManyToManyField is all you need. However, sometimes you may need to associate data with the relationship between two models.
+
+For example, consider the case of an application tracking the musical groups which musicians belong to. There is a many-to-many relationship between a person and the groups of which they are a member, so you could use a ManyToManyField to represent this relationship. However, there is a lot of detail about the membership that you might want to collect, such as the date at which the person joined the group.
+
+For these situations, Django allows you to specify the model that will be used to govern the many-to-many relationship. You can then put extra fields on the intermediate model. The intermediate model is associated with the ManyToManyField using the through argument to point to the model that will act as an intermediary. For our musician example, the code would look something like this:
+
+    from django.db import models
+
+    class Person(models.Model):
+        name = models.CharField(max_length=128)
+
+        def __str__(self):
+            return self.name
+
+    class Group(models.Model):
+        name = models.CharField(max_length=128)
+        members = models.ManyToManyField(Person, through='Membership')
+
+        def __str__(self):
+            return self.name
+
+    class Membership(models.Model):
+        person = models.ForeignKey(Person, on_delete=models.CASCADE)
+        group = models.ForeignKey(Group, on_delete=models.CASCADE)
+        date_joined = models.DateField()
+        invite_reason = models.CharField(max_length=64)
+
+When you set up the intermediary model, you explicitly specify foreign keys to the models that are involved in the many-to-many relationship. This explicit declaration defines how the two models are related.
+
+There are a few restrictions on the intermediate model:
+
+- Your intermediate model must contain one - and only one - foreign key to the source model (this would be Group in our example), or you must explicitly specify the foreign keys Django should use for the relationship using ManyToManyField.through_fields. If you have more than one foreign key and through_fields is not specified, a validation error will be raised. A similar restriction applies to the foreign key to the target model (this would be Person in our example).
+- For a model which has a many-to-many relationship to itself through an intermediary model, two foreign keys to the same model are permitted, but they will be treated as the two (different) sides of the many-to-many relationship. If there are more than two foreign keys though, you must also specify through_fields as above, or a validation error will be raised.
+
+Now that you have set up your ManyToManyField to use your intermediary model (Membership, in this case), you’re ready to start creating some many-to-many relationships. You do this by creating instances of the intermediate model:
+
+    >>> ringo = Person.objects.create(name="Ringo Starr")
+    >>> paul = Person.objects.create(name="Paul McCartney")
+    >>> beatles = Group.objects.create(name="The Beatles")
+    >>> m1 = Membership(person=ringo, group=beatles,
+    ...     date_joined=date(1962, 8, 16),
+    ...     invite_reason="Needed a new drummer.")
+    >>> m1.save()
+    >>> beatles.members.all()
+    <QuerySet [<Person: Ringo Starr>]>
+    >>> ringo.group_set.all()
+    <QuerySet [<Group: The Beatles>]>
+    >>> m2 = Membership.objects.create(person=paul, group=beatles,
+    ...     date_joined=date(1960, 8, 1),
+    ...     invite_reason="Wanted to form a band.")
+    >>> beatles.members.all()
+    <QuerySet [<Person: Ringo Starr>, <Person: Paul McCartney>]>
+
+You can also use add(), create(), or set() to create relationships, as long as you specify through_defaults for any required fields:
+
+    >>> beatles.members.add(john, through_defaults={'date_joined': date(1960, 8, 1)})
+    >>> beatles.members.create(name="George Harrison", through_defaults={'date_joined': date(1960, 8, 1)})
+    >>> beatles.members.set([john, paul, ringo, george], through_defaults={'date_joined': date(1960, 8, 1)})
+
+You may prefer to create instances of the intermediate model directly.
+
+If the custom through table defined by the intermediate model does not enforce uniqueness on the (model1, model2) pair, allowing multiple values, the remove() call will remove all intermediate model instances:
+
+    >>> Membership.objects.create(person=ringo, group=beatles,
+    ...     date_joined=date(1968, 9, 4),
+    ...     invite_reason="You've been gone for a month and we miss you.")
+    >>> beatles.members.all()
+    <QuerySet [<Person: Ringo Starr>, <Person: Paul McCartney>, <Person: Ringo Starr>]>
+    >>> # This deletes both of the intermediate model instances for Ringo Starr
+    >>> beatles.members.remove(ringo)
+    >>> beatles.members.all()
+    <QuerySet [<Person: Paul McCartney>]>
+
+The clear() method can be used to remove all many-to-many relationships for an instance:
+
+    >>> # Beatles have broken up
+    >>> beatles.members.clear()
+    >>> # Note that this deletes the intermediate model instances
+    >>> Membership.objects.all()
+    <QuerySet []>
+
+Once you have established the many-to-many relationships, you can issue queries. Just as with normal many-to-many relationships, you can query using the attributes of the many-to-many-related model:
+
+    # Find all the groups with a member whose name starts with 'Paul'
+    >>> Group.objects.filter(members__name__startswith='Paul')
+    <QuerySet [<Group: The Beatles>]>
+
+As you are using an intermediate model, you can also query on its attributes:
+
+    # Find all the members of the Beatles that joined after 1 Jan 1961
+    >>> Person.objects.filter(
+    ...     group__name='The Beatles',
+    ...     membership__date_joined__gt=date(1961,1,1))
+    <QuerySet [<Person: Ringo Starr]>
+
+If you need to access a membership’s information you may do so by directly querying the Membership model:
+
+    >>> ringos_membership = Membership.objects.get(group=beatles, person=ringo)
+    >>> ringos_membership.date_joined
+    datetime.date(1962, 8, 16)
+    >>> ringos_membership.invite_reason
+    'Needed a new drummer.'
+
+Another way to access the same information is by querying the many-to-many reverse relationship from a Person object:
+
+    >>> ringos_membership = ringo.membership_set.get(group=beatles)
+    >>> ringos_membership.date_joined
+    datetime.date(1962, 8, 16)
+    >>> ringos_membership.invite_reason
+    'Needed a new drummer.'
+
+### One-To-One Relationships
+
+To define a one-to-one relationship, use OneToOneField. You use it just like any other Field type: by including it as a class attribute of your model.
+
+This is most useful on the primary key of an object when that object “extends” another object in some way.
+
+OneToOneField requires a positional argument: the class to which the model is related.
+
+For example, if you were building a database of “places”, you would build pretty standard stuff such as address, phone number, etc. in the database. Then, if you wanted to build a database of restaurants on top of the places, instead of repeating yourself and replicating those fields in the Restaurant model, you could make Restaurant have a OneToOneField to Place (because a restaurant “is a” place; in fact, to handle this you’d typically use inheritance, which involves an implicit one-to-one relation).
+
+As with ForeignKey, a recursive relationship can be defined and references to as-yet undefined models can be made.
+
+>*See also*:
+See the [One-to-one relationship model example](https://docs.djangoproject.com/en/3.2/topics/db/examples/one_to_one/) for a full example.
+
+OneToOneField fields also accept an optional parent_link argument.
+
+OneToOneField classes used to automatically become the primary key on a model. This is no longer true (although you can manually pass in the primary_key argument if you like). Thus, it’s now possible to have multiple fields of type OneToOneField on a single model.
+
+## Models Across Files
+
+It’s perfectly OK to relate a model to one from another app. To do this, import the related model at the top of the file where your model is defined. Then, refer to the other model class wherever needed. For example:
+
+    from django.db import models
+    from geography.models import ZipCode
+
+    class Restaurant(models.Model):
+        # ...
+        zip_code = models.ForeignKey(
+            ZipCode,
+            on_delete=models.SET_NULL,
+            blank=True,
+            null=True,
+        )
+
+## Field Name Restrictions
+
+Django places some restrictions on model field names:
+
+1. A field name cannot be a Python reserved word, because that would result in a Python syntax error. For example:
+
+    class Example(models.Model):
+        pass = models.IntegerField() # 'pass' is a reserved word!
+
+2. A field name cannot contain more than one underscore in a row, due to the way Django’s query lookup syntax works. For example:
+
+    class Example(models.Model):
+        foo__bar = models.IntegerField() # 'foo__bar' has two underscores!
+
+3. A field name cannot end with an underscore, for similar reasons.
+
+These limitations can be worked around, though, because your field name doesn’t necessarily have to match your database column name. See the db_column option.
+
+SQL reserved words, such as join, where or select, are allowed as model field names, because Django escapes all database table names and column names in every underlying SQL query. It uses the quoting syntax of your particular database engine.
+
+## Custom Field Types
+
+If one of the existing model fields cannot be used to fit your purposes, or if you wish to take advantage of some less common database column types, you can create your own field class. Full coverage of creating your own fields is provided in Writing custom model fields.
+
+## Meta Options
+
+Give your model metadata by using an inner class Meta, like so:
+
+    from django.db import models
+
+    class Ox(models.Model):
+        horn_length = models.IntegerField()
+
+        class Meta:
+            ordering = ["horn_length"]
+            verbose_name_plural = "oxen"
+
+Model metadata is “anything that’s not a field”, such as ordering options (ordering), database table name (db_table), or human-readable singular and plural names (verbose_name and verbose_name_plural). None are required, and adding class Meta to a model is completely optional.
+
+A complete list of all possible [Meta options](https://docs.djangoproject.com/en/3.2/ref/models/options/) can be found in the model option reference.
+
+## Model Attributes
+
+**Objects:** The most important attribute of a model is the Manager. It’s the interface through which database query operations are provided to Django models and is used to retrieve the instances from the database. If no custom Manager is defined, the default name is objects. Managers are only accessible via model classes, not the model instances.
+
+## Model Methods
+
+Define custom methods on a model to add custom “row-level” functionality to your objects. Whereas Manager methods are intended to do “table-wide” things, model methods should act on a particular model instance.
+
+This is a valuable technique for keeping business logic in one place – the model.
+
+For example, this model has a few custom methods:
+
+    from django.db import models
+
+    class Person(models.Model):
+        first_name = models.CharField(max_length=50)
+        last_name = models.CharField(max_length=50)
+        birth_date = models.DateField()
+
+        def baby_boomer_status(self):
+            "Returns the person's baby-boomer status."
+            import datetime
+            if self.birth_date < datetime.date(1945, 8, 1):
+                return "Pre-boomer"
+            elif self.birth_date < datetime.date(1965, 1, 1):
+                return "Baby boomer"
+            else:
+                return "Post-boomer"
+
+        @property
+        def full_name(self):
+            "Returns the person's full name."
+            return '%s %s' % (self.first_name, self.last_name)
+
+The last method in this example is a property.
+
+The model instance reference has a complete list of methods automatically given to each model. You can override most of these – see overriding predefined model methods, below – but there are a couple that you’ll almost always want to define:

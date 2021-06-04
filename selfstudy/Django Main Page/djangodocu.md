@@ -4,7 +4,7 @@
 
 Django provides an abstraction layer (the “models”) for structuring and manipulating the data of your Web application. Learn more about it below:
 
-- **[Models](Models/models.md)**: Introduction to models | Field types | Indexes | Meta options | Model class | Choices | Help_Text
+- **[Models](Models/models.md)**: Introduction to models | Field types | Indexes | Meta options | Model class | Choices | Help_Text | Extend Models from another App
 - **[QuerySets](Models/queryset.md)**: Making queries | QuerySet method reference | Lookup expressions.
 - **[Model Instances](Models/modelinstance.md)**: Instance methods | Accessing related objects.
 - **[Migrations](Models/migrations.md)**: Introduction to Migrations | Operations reference | SchemaEditor | Writing migrations.
