@@ -42,6 +42,19 @@
 - Create Template folder in polls directory. In template folder create polls and then index.html.. poll/templates/polls/index.html.
 - Add name spacing in urls.py file by mentioned app_name = name of the app. Before mentioning urlpatterns.
 - Add static files (polls/static/polls/style.css) similary(polls/static/polls/images) or (polls/static/polls/js)
+- Add DataBase such as POSTGRESQL
+        
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'postgres',
+                'USER': 'postgres',
+                'PASSWORD': 'Rishi@2311',
+                'HOST': 'localhost',
+                'PORT': 5433,
+            }
+        }
+
 <<<<<<< HEAD
 - Dont forget to add app name in yourfile/urls.py (app_name='name')
 =======
