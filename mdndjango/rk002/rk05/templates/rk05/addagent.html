@@ -1,0 +1,23 @@
+{% extends "rk04/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1>Add Agent</h1>
+    </div>
+</div>
+<form action="#" method="POST">
+    {% csrf_token %}
+    <div class="container">
+        <p class="m-2 p-2">Agency Name</p><p>{{ form.name }}</p>
+        <p class="m-2">Address</p>{{ form.address }}
+        <p class="m-2">City</p>{{ form.address }}
+        <p class="m-2">Postal Code</p>{{ form.pin_code }}
+        <p class="m-2">Country</p>{{ form.country }}
+        <p class="m-2">Email</p>{{ form.email }}
+        <p class="m-2">Contact</p>{{ form.phone }}
+        <input type="submit" value="Save">
+    </div>
+</form>
+
+{% endblock %}

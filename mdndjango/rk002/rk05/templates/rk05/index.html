@@ -1,0 +1,44 @@
+{% extends "rk04/base.html" %}
+
+{% block content %}
+<title>RK04</title>
+
+    <h1 class="p-5">RK Org Functioning</h1>
+    <div class="container">
+        <h2>Sales Team</h2>
+        <ul>
+            <li>Agents DB</li>
+            <li>Guest DB</li>
+            <li>Create File</li>
+        </ul>
+        <h2>Products Team</h2>
+        <ul>
+            <li>Hotel - suppliers will be many to many</li>
+            <li>Attractions - suppliers many to many</li>
+            <li>Tickets - FK suppliers</li>
+            <li>Day Tours - specific suppliers only (FK)</li>
+            <li>Private Tour - could be FK or Many to Many</li>
+            <li>Meals - FK suppliers</li>
+            <li>Transportation - FK suppliers</li>
+        </ul>
+        <h2>Transportation: May Need Different Model</h2>
+        <ul>
+            <li>Pickup Point</li>
+            <li>Address</li>
+            <li>City, Country</li>
+            <li>If Flight then flight number</li>
+            <li>Elif: Train No.</li>
+            <li>Terminal No.</li>
+            <li>Pickup Date & Time</li>
+            <li>Drop off Point:: Many to Many Hotel</li>
+            <li>Address</li>
+            <li>City, Country</li>
+        </ul>
+
+    </div>
+    <div class="row">
+        <a href="./notes.html"><h2>Notes</h2></a>
+        
+    </div>
+
+{% endblock %}

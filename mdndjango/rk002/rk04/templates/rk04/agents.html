@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}List of {{ agency_name }}{% endblock %}
+
+{% block content %}
+
+    {% for agent in agency_name %}
+        <p>{{ article.agency_name }}</p>
+        <p>{{ article.agency_address }}</p>
+    {% endfor %}
+
+{% endblock %}
