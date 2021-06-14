@@ -4,7 +4,8 @@ from .models import *
 
 admin.site.register(Agent)
 admin.site.register(Accommodation)
-admin.site.register(Attractions)
-admin.site.register(Daytours)
-admin.site.register(Tickets)
-admin.site.register(Meals)
+admin.site.register(Attraction)
+admin.site.register(Daytour)
+admin.site.register(Ticket)
+admin.site.register(Meal)
+admin.site.register(Supplier)

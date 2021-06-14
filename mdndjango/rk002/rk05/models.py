@@ -62,8 +62,10 @@ class CommonInfo(models.Model):
         abstract = True
 
 class Supplier(CommonInfo):
-    phone = PhoneNumberField()    
-
+    phone = PhoneNumberField()
+    
+    def __str__(self):
+        return self.name
 
 class Agent(CommonInfo):
     phone = PhoneNumberField()
@@ -71,23 +73,28 @@ class Agent(CommonInfo):
 
 class Accommodation(CommonInfo):
     phone = PhoneNumberField()
+    #provider = models.ManyToManyField(Supplier, help_text='select loddging provider')
     
 
-class Attractions(CommonInfo):
+class Attraction(CommonInfo):
     phone = PhoneNumberField()
     description = models.TextField(max_length=3000)
+    #provider = models.ManyToManyField(Supplier, help_text='select vendor for this service')
 
 
-class Daytours(CommonInfo):
+class Daytour(CommonInfo):
     phone = PhoneNumberField()
     description = models.TextField(max_length=3000)
+    #provider = models.ManyToManyField(Supplier, help_text='select vendor for this service')
+    
 
-
-class Tickets(CommonInfo):
+class Ticket(CommonInfo):
     phone = PhoneNumberField()
     description = models.TextField(max_length=3000)
+    #provider = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="any_tickets", default=None)
 
 
-class Meals(CommonInfo):
+class Meal(CommonInfo):
     phone = PhoneNumberField()
     description = models.TextField(max_length=3000)
+    #provider = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="restaurant_name", default=None)
