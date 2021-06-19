@@ -1,0 +1,30 @@
+{% extends 'products/base.html' %}
+
+{% block content %} 
+<div class="container">
+    <table class="m-3, p-3">
+        <h2>Supplier Data</h2>
+        <th class="p-3">ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Postal Code</th>
+        <th>Country</th>
+        <th>Email</th>
+        <th>Phone</th>
+        {% for supplier in suppliers %}
+        <tr>
+            <td class="m-2">{{ supplier.id }}</td>
+            <td>{{ supplier.sup_name }}</td>
+            <td>{{ supplier.sup_address }}</td>
+            <td>{{ supplier.sup_city }}</td>
+            <td>{{ supplier.sup_postal_code }}</td>
+            <td>{{ supplier.sup_country }}</td>
+            <td>{{ supplier.sup_email }}</td>
+            <td>{{ supplier.phone }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

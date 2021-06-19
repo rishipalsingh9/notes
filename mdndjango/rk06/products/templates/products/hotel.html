@@ -1,0 +1,32 @@
+{% extends 'products/base.html' %}
+
+
+{% block content %} 
+
+<div class="container">
+    <table class="m-3, p-3">
+        <h2>Hotel Data</h2>
+        <th class="p-3">ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Postal Code</th>
+        <th>Country</th>
+        <th>Email</th>
+        <th>Phone</th>
+        {% for accommodation in accommodations %}
+        <tr>
+            <td class="m-2">{{ accommodation.id }}</td>
+            <td>{{ accommodation.name }}</td>
+            <td>{{ accommodation.address }}</td>
+            <td>{{ accommodation.city }}</td>
+            <td>{{ accommodation.pin_code }}</td>
+            <td>{{ accommodation.country }}</td>
+            <td>{{ accommodation.email }}</td>
+            <td>{{ accommodation.phone }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
